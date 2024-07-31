@@ -1,0 +1,24 @@
+<Configuration name="ReceptionMainLogger" status="INFO" monitorInterval="5">
+    <Appenders>
+        <Console name="ConsoleOut">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+        </Console>
+        <RollingFile name="FileOut"
+                     fileName="./logs/reception-${date:yyyyMMdd}.log"
+                     filePattern="./logs/logs/$${date:yyyy-MM}/reception-%d{MM-dd-yyyy}-%i.log.gz"
+                     immediateFlush="false"
+                     append="true">
+            <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" />
+                <SizeBasedTriggeringPolicy size="5MB" />
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="ConsoleOut" />
+            <AppenderRef ref="FileOut"/>
+        </Root>
+    </Loggers>
+</Configuration>

@@ -1,0 +1,20 @@
+package ru.dponyashov.service;
+
+import ru.dponyashov.dto.filter.FilterClient;
+import ru.dponyashov.entity.Client;
+
+import java.util.List;
+
+public interface ClientService {
+    List<Client> findAll();
+
+    Client findById(Long id);
+
+    List<Client> findByName(String name);
+
+    void delete(Long id);
+
+    public Client save(Client client);
+
+    List<Client> findWithFilter(FilterClient filterClient);
+}

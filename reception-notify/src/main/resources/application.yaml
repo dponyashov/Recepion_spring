@@ -1,0 +1,14 @@
+server:
+  port: 8081
+
+reception:
+  name: массажный салон
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+
+kafka:
+  topics:
+    mail: mailNotify_1
+    phone: phoneNotify_1

@@ -1,0 +1,37 @@
+server:
+  port: 8080
+
+safety:
+  key: ${ENCRYPT_KEY}
+
+kafka:
+  topics:
+    mail: mailNotify_1
+    phone: phoneNotify_1
+
+spring:
+#  profiles:
+#    active:
+#      - docker
+#      - other
+  application:
+    name: reception
+  kafka:
+    bootstrap-servers: localhost:9092
+#    log:
+#      cleanup:
+#        policy: delete
+#      retention:
+#        ms: 500
+  datasource:
+    url: jdbc:postgresql://localhost:5432/db_reception
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
