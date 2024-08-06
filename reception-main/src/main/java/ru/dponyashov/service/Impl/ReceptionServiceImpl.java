@@ -67,12 +67,12 @@ public class ReceptionServiceImpl implements ReceptionService {
             throw new MasterIsOccupiedException(reception);
         }
 
-        Reception savedReception = receptionRepository.save(reception);
+        Reception savedReception = receptionRepository.save(dataEncoder.encode(reception));
         if(savedReception.getClient().getNotifications() != null){
             sendNotifications(savedReception);
         }
         log.info(String.format("Записаны данные записи с id: %s", savedReception.getId()));
-        return savedReception;
+        return dataEncoder.decode(reception);
     }
 
     @Override
@@ -102,7 +102,7 @@ public class ReceptionServiceImpl implements ReceptionService {
     @Override
     public void sendNotifications(Long id) {
         Reception reception = findById(id);
-        sendNotifications(reception);
+        sendNotifications(dataEncoder.decode(reception));
         log.info(String.format("Отправлены оповещения по записи id: %s", id));
     }
 

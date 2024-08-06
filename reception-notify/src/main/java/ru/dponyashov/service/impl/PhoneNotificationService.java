@@ -8,9 +8,10 @@ import ru.dponyashov.service.NotificationService;
 @Log4j2
 public class PhoneNotificationService implements NotificationService {
     @Override
-    public void sendMessage(String message) {
-        String textMessage = "phone: " + message;
+    public void sendMessage(String messageText, String to) {
 
-        log.info(textMessage);
+        //TODO реализация смс уведомления
+
+        log.info("Отправлено сообщение '{}' на телефон '{}'", messageText, to);
     }
 }

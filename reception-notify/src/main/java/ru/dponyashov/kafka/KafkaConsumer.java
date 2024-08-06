@@ -19,12 +19,12 @@ public class KafkaConsumer {
     @KafkaListener(topics = "${kafka.topics.mail}", groupId = "reception")
     public void mailTopicListener(ConsumerRecord<Long, ClientNotify> record){
         String message = messageMaker.makeMessageFromData(record.value());
-        mailNotificationService.sendMessage(message);
+        mailNotificationService.sendMessage(message, record.value().getMailClient());
     }
 
     @KafkaListener(topics = "${kafka.topics.phone}", groupId = "reception")
     public void phoneTopicListener(ConsumerRecord<Long, ClientNotify> record){
         String message = messageMaker.makeMessageFromData(record.value());
-        phoneNotificationService.sendMessage(message);
+        phoneNotificationService.sendMessage(message, record.value().getPhoneClient());
     }
 }

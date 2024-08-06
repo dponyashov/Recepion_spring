@@ -68,12 +68,9 @@ public class ClientServiceImpl implements ClientService {
     @Override
     @Transactional
     public Client save(Client client){
-        Client savedClient = dataEncoder.decode(
-                clientRepository.save(
-                    dataEncoder.encode(client)
-                )
-        );
+        Client savedClient = clientRepository.save(dataEncoder.encode(client));
         log.info(String.format("Записаны данные клиента с id: %s", savedClient.getId()));
-        return savedClient;
+        client.setId(savedClient.getId());
+        return dataEncoder.decode(client);
     }
 }

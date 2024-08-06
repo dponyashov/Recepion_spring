@@ -63,7 +63,8 @@ public class MasterServiceImpl implements MasterService {
     public Master save(Master master){
         Master savedMaster = masterRepository.save(dataEncoder.encode(master));
         log.info(String.format("Записаны данные мастера с id: %s", savedMaster.getId()));
-        return savedMaster;
+        master.setId(savedMaster.getId());
+        return dataEncoder.decode(master);
     }
 
     @Override
