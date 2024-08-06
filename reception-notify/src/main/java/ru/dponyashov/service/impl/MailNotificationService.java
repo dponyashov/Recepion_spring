@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
+import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import ru.dponyashov.service.NotificationService;
 
@@ -14,7 +14,10 @@ import ru.dponyashov.service.NotificationService;
 @RequiredArgsConstructor
 public class MailNotificationService implements NotificationService {
 
-    private final JavaMailSender javaMailSender;
+    private final MailSender mailSender;
+
+    @Value("${spring.mail.username}")
+    private String mailFrom;
 
     @Value("${reception.subject}")
     private String subject;
@@ -36,12 +39,12 @@ public class MailNotificationService implements NotificationService {
         }
     }
 
-//    @Override
-    public void sendSimpleEmail(String toAddress, String subject, String message) {
+    private void sendSimpleEmail(String toAddress, String subject, String message) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setFrom(mailFrom);
         simpleMailMessage.setTo(toAddress);
         simpleMailMessage.setSubject(subject);
         simpleMailMessage.setText(message);
-        javaMailSender.send(simpleMailMessage);
+        mailSender.send(simpleMailMessage);
     }
 }

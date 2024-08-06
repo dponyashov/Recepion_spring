@@ -8,18 +8,21 @@ reception:
 spring:
   kafka:
     bootstrap-servers: localhost:9092
-
   mail:
     host: smtp.gmail.com
     port: 587
+    protocol: smtp
     username: ${MAIL_USER}
     password: ${MAIL_PASSWORD}
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
+    debug: true
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: true
+mail:
+  debug: true
 
 kafka:
   topics:
