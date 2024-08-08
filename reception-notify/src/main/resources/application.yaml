@@ -14,7 +14,6 @@ spring:
     protocol: smtp
     username: ${MAIL_USER}
     password: ${MAIL_PASSWORD}
-    debug: true
 #    properties:
 #      mail:
 #        smtp:

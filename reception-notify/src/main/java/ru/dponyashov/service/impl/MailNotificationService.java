@@ -39,10 +39,10 @@ public class MailNotificationService implements NotificationService {
         }
     }
 
-    private void sendSimpleEmail(String toAddress, String subject, String message) {
+    private void sendSimpleEmail(String to, String subject, String message) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setFrom(mailFrom);
-        simpleMailMessage.setTo(toAddress);
+        simpleMailMessage.setTo(to);
         simpleMailMessage.setSubject(subject);
         simpleMailMessage.setText(message);
         mailSender.send(simpleMailMessage);

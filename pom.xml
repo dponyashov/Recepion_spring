@@ -25,7 +25,8 @@
         <module>reception-notify</module>
 		<module>reception-main</module>
 		<module>reception-data</module>
-	</modules>
+        <module>reception-online-record</module>
+    </modules>
     <scm>
 		<connection/>
 		<developerConnection/>
