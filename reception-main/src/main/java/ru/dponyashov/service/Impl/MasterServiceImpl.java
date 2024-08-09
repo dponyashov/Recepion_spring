@@ -62,7 +62,7 @@ public class MasterServiceImpl implements MasterService {
     @Transactional
     public Master save(Master master){
         Master savedMaster = masterRepository.save(dataEncoder.encode(master));
-        log.info(String.format("Записаны данные мастера с id: %s", savedMaster.getId()));
+        log.info("Записаны данные мастера с id: {}", savedMaster.getId());
         master.setId(savedMaster.getId());
         return dataEncoder.decode(master);
     }
@@ -71,6 +71,6 @@ public class MasterServiceImpl implements MasterService {
     @Transactional
     public void delete(Long id) {
         masterRepository.deleteById(id);
-        log.info(String.format("Удален мастер с id: %s", id));
+        log.info("Удален мастер с id: {}", id);
     }
 }

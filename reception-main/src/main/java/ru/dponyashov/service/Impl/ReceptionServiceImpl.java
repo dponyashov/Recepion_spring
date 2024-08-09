@@ -71,7 +71,7 @@ public class ReceptionServiceImpl implements ReceptionService {
         if(savedReception.getClient().getNotifications() != null){
             sendNotifications(savedReception);
         }
-        log.info(String.format("Записаны данные записи с id: %s", savedReception.getId()));
+        log.info("Записаны данные записи с id: {}", savedReception.getId());
         return dataEncoder.decode(reception);
     }
 
@@ -79,7 +79,7 @@ public class ReceptionServiceImpl implements ReceptionService {
     @Transactional
     public void delete(Long id){
         receptionRepository.deleteById(id);
-        log.info(String.format("Удалена запись с id: %s", id));
+        log.info("Удалена запись с id: {}", id);
     }
 
     @Override
@@ -103,7 +103,7 @@ public class ReceptionServiceImpl implements ReceptionService {
     public void sendNotifications(Long id) {
         Reception reception = findById(id);
         sendNotifications(dataEncoder.decode(reception));
-        log.info(String.format("Отправлены оповещения по записи id: %s", id));
+        log.info("Отправлены оповещения по записи id: {}", id);
     }
 
     private void sendNotifications(Reception reception) {

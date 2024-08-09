@@ -5,18 +5,15 @@ bot:
   token: ${BOT_TOKEN}
   name: ${BOT_NAME}
 
-
-
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/db_reception
+    url: jdbc:postgresql://localhost:5432/db_reception_online
     username: ${DB_USER}
     password: ${DB_PASSWORD}
   flyway:
-#    schemas:
-#      - public
-#      - main_schema
-#      - online_schema
+    schemas:
+      - public
+      - online_schema
     out-of-order: true
     ignore-missing-migrations: true
 

@@ -28,10 +28,9 @@ spring:
     username: ${DB_USER}
     password: ${DB_PASSWORD}
   flyway:
-#    schemas:
-#      - public
-#      - main_schema
-#      - online_schema
+    schemas:
+      - public
+      - main_schema
     out-of-order: true
     ignore-missing-migrations: true
   jpa:

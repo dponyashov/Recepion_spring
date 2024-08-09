@@ -41,14 +41,14 @@ public class RoomServiceImpl implements RoomService {
     @Transactional
     public void delete(Long id){
         roomRepository.deleteById(id);
-        log.info(String.format("Удалено помещение с id: %s", id));
+        log.info("Удалено помещение с id: {}", id);
     }
 
     @Override
     @Transactional
     public Room save(Room room){
         Room savedRoom = roomRepository.save(room);
-        log.info(String.format("Записаны данные помещения с id: %s", savedRoom.getId()));
+        log.info("Записаны данные помещения с id: {}", savedRoom.getId());
         return savedRoom;
     }
 }

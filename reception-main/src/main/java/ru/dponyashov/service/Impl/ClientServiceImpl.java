@@ -62,14 +62,14 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     public void delete(Long id) {
         clientRepository.deleteById(id);
-        log.info(String.format("Удален клиент с id: %s", id));
+        log.info("Удален клиент с id: {}", id);
     }
 
     @Override
     @Transactional
     public Client save(Client client){
         Client savedClient = clientRepository.save(dataEncoder.encode(client));
-        log.info(String.format("Записаны данные клиента с id: %s", savedClient.getId()));
+        log.info("Записаны данные клиента с id: {}", savedClient.getId());
         client.setId(savedClient.getId());
         return dataEncoder.decode(client);
     }

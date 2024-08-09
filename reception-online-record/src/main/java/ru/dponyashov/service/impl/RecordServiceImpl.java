@@ -1,6 +1,8 @@
 package ru.dponyashov.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import ru.dponyashov.dto.RecordDto;
 import ru.dponyashov.dto.RecordFilter;
@@ -14,6 +16,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class RecordServiceImpl implements RecordService {
 
     private final RecordRepository recordRepository;
@@ -83,6 +86,7 @@ public class RecordServiceImpl implements RecordService {
     }
 
     @Override
+    @Transactional
     public RecordDto save(Long id, RecordDto record) {
         if(!recordIsValid(record)) {
             throw new InvalidDataException("данные записи введены не верно!");
@@ -91,8 +95,10 @@ public class RecordServiceImpl implements RecordService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         recordRepository.deleteById(id);
+        log.info("Удалены данные онлайн записи с id: {}", id);
     }
 
     private boolean recordIsValid(RecordDto record) {
@@ -119,6 +125,7 @@ public class RecordServiceImpl implements RecordService {
                 .build();
 
         RecordEntity savedEntity = recordRepository.save(entity);
+        log.info("Записаны данные онлайн записи с id: {}", savedEntity.getId());
         return RecordDto.builder()
                 .phone(savedEntity.getPhone())
                 .name(savedEntity.getName())
