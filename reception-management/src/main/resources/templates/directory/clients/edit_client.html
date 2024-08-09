@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Редактирование клиента &laquo;[[${client.name}]]&raquo; &ndash; Ресепшен</title>
+</head>
+<body>
+<a data-th-href="@{/directories/clients/{clientId}(clientId=${client.id})}">&larr; к клиенту</a>
+<h1>Редактирование клиента &laquo;[[${client.name}]]&raquo;</h1>
+<div data-th-if="${errors}">
+  <h2>Ошибки</h2>
+  <ul>
+    <li data-th-each="error: ${errors}" data-th-text="${error}"></li>
+  </ul>
+</div>
+<form method="post" data-th-action="@{/directories/clients/{clientId}/edit(clientId=${client.id})}">
+  <label>
+    Имя:<br>
+    <input type="text" name="name" data-th-value="${new_client != null ? new_client.name : client.name}">
+  </label><br>
+  <label>
+    Телефон:<br>
+    <input type="text" name="phone" data-th-value="${new_client != null ? new_client.phone : client.phone}">
+  </label><br>
+  <label>
+    Телефон:<br>
+    <input type="text" name="mail" data-th-value="${new_client != null ? new_client.mail : client.mail}">
+  </label><br>
+  <button type="submit">Изменить</button>
+</form>
+</body>
+</html>

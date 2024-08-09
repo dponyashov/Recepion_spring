@@ -1,0 +1,9 @@
+server:
+  port: 8083
+
+reception:
+  services:
+    main:
+      uri: http://localhost:8080
+      username: ${REST_USER}
+      password: ${REST_PASSWORD}

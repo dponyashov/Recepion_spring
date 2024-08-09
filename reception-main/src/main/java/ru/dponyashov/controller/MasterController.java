@@ -53,7 +53,6 @@ public class MasterController {
                             .path("/api/room/{masterId}")
                             .build(Map.of("masterId", newMaster.getId())))
                     .body(masterFromDB);
-//            return new ResponseEntity<>(masterFromDB, HttpStatus.CREATED);
         }
     }
 

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Новый мастер &ndash; Ресепшен. Справочники.</title>
+</head>
+<body>
+<a data-th-href="@{/directories/masters}">&larr; к списку мастеров</a>
+<h1>Новый мастер</h1>
+<div data-th-if="${errors}">
+  <h2>Ошибки</h2>
+  <ul>
+    <li data-th-each="error: ${errors}" data-th-text="${error}"></li>
+  </ul>
+</div>
+<form method="post" data-th-action="@{/directories/masters/create}">
+  <label>
+    Мастер:<br>
+    <input type="text" name="name" data-th-value="${master?.name}">
+  </label><br>
+  <label>
+    Телефон:<br>
+    <input type="text" name="phone" data-th-value="${master?.phone}">
+  </label><br>
+  <button type="submit">Создать</button>
+</form>
+</body>
+</html>

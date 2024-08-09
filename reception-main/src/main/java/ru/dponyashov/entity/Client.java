@@ -3,10 +3,7 @@ package ru.dponyashov.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import ru.dponyashov.safety.annotation.StringToEncode;
 
 import java.util.List;
@@ -15,9 +12,9 @@ import java.util.List;
 @Table(name = "t_client", schema = "main_schema")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-
 @NamedQueries(
         @NamedQuery(name = "Client.findByFilter",
                 query = """

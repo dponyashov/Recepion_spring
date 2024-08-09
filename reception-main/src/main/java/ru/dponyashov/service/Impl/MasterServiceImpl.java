@@ -61,7 +61,12 @@ public class MasterServiceImpl implements MasterService {
     @Override
     @Transactional
     public Master save(Master master){
-        Master savedMaster = masterRepository.save(dataEncoder.encode(master));
+        Master masterForSave = Master.builder().
+                id(master.getId()).
+                name(master.getName()).
+                phone(master.getPhone()).
+                build();
+        Master savedMaster = masterRepository.save(dataEncoder.encode(masterForSave));
         log.info("Записаны данные мастера с id: {}", savedMaster.getId());
         master.setId(savedMaster.getId());
         return dataEncoder.decode(master);

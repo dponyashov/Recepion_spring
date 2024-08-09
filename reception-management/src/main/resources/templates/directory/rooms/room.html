@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>[[${room.number}]] &ndash; Ресепшен</title>
+</head>
+<body>
+<h1 data-th-text="${room.number}"></h1>
+<a data-th-href="@{/directories/rooms}">&larr; к списку помещений</a>
+
+<ul>
+  <li> <strong>ID</strong>:<span data-th-text="${room.id}"></span></li>
+  <li> <strong>Помещение</strong>:<span data-th-text="${room.number}"></span></li>
+  <li> <strong>Описание</strong>:<span data-th-text="${room.note}"></span></li>
+</ul>
+<a data-th-href="@{/directories/rooms/{roomId}/edit(roomId=${room.id})}">Изменить</a>
+<form method="post" data-th-action="@{/directories/rooms/{roomId}/delete(roomId=${room.id})}">
+  <button type="submit">Удалить</button>
+</form>
+</body>
+</html>

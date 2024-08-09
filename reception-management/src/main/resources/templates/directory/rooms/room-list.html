@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ресепшен. Справочники. Помещения</title>
+</head>
+<body>
+  <a data-th-href="@{/directories}">к списку справочников</a>
+  <br>
+  <a data-th-href="@{/directories/rooms/create}">+ Новое помещение</a>
+  <h3>Помещения</h3>
+  <form method="get" data-th-action="@{/directories/rooms}">
+      <label>Фильтр:
+          <input type="text" name="filterNumber" data-th-value="${filterNumber}">
+          <button type="submit">Поиск</button>
+      </label>
+  </form>
+  <table>
+      <thead>
+          <th>id</th>
+          <th>Помещение</th>
+          <th>Описание</th>
+      </thead>
+      <tbody>
+          <tr data-th-each="room: ${rooms}">
+              <td data-th-text="${room.id}"></td>
+              <td>
+                  <a data-th-href="@{/directories/rooms/{roomId}(roomId=${room.id})}"
+                     data-th-text="${room.number}"></a>
+              </td>
+              <td  data-th-text="${room.note}"></td>
+          </tr>
+      </tbody>
+  </table>
+
+</body>
+</html>

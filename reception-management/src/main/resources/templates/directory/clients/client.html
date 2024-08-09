@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>[[${client.name}]] &ndash; Ресепшен</title>
+</head>
+<body>
+<h1 data-th-text="${client.name}"></h1>
+<a data-th-href="@{/directories/clients}">&larr; к списку клиентов</a>
+
+<ul>
+  <li> <strong>ID</strong>:<span data-th-text="${client.id}"></span></li>
+  <li> <strong>Имя</strong>:<span data-th-text="${client.name}"></span></li>
+  <li> <strong>Телефон</strong>:<span data-th-text="${client.phone}"></span></li>
+  <li> <strong>Почта</strong>:<span data-th-text="${client.mail}"></span></li>
+</ul>
+<a data-th-href="@{/directories/clients/{clientId}/edit(clientId=${client.id})}">Изменить</a>
+<form method="post" data-th-action="@{/directories/clients/{clientId}/delete(clientId=${client.id})}">
+  <button type="submit">Удалить</button>
+</form>
+</body>
+</html>

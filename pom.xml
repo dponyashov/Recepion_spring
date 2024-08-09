@@ -26,6 +26,7 @@
 		<module>reception-main</module>
 		<module>reception-data</module>
         <module>reception-online-record</module>
+        <module>reception-management</module>
     </modules>
     <scm>
 		<connection/>

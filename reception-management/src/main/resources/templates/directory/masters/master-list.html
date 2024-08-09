@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ресепшен. Справочники. Мастера</title>
+</head>
+<body>
+  <a data-th-href="@{/directories}">к списку справочников</a>
+  <br>
+  <a data-th-href="@{/directories/masters/create}">+ Новый мастер</a>
+  <h3>Мастера</h3>
+  <form method="get" data-th-action="@{/directories/masters}">
+      <label>Фильтр:
+          <input type="text" name="masterName" data-th-value="${filterName}">
+          <input type="text" name="masterPhone" data-th-value="${filterPhone}">
+          <button type="submit">Поиск</button>
+      </label>
+  </form>
+  <table>
+      <thead>
+          <th>id</th>
+          <th>Мастер</th>
+          <th>Телефон</th>
+      </thead>
+      <tbody>
+          <tr data-th-each="master: ${masters}">
+              <td data-th-text="${master.id}"></td>
+              <td>
+                  <a data-th-href="@{/directories/masters/{masterId}(masterId=${master.id})}"
+                     data-th-text="${master.name}"></a>
+              </td>
+              <td  data-th-text="${master.phone}"></td>
+          </tr>
+      </tbody>
+  </table>
+
+</body>
+</html>

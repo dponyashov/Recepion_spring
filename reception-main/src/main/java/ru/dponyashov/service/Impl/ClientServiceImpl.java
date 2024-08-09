@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.dponyashov.dto.filter.FilterClient;
 import ru.dponyashov.entity.Client;
+import ru.dponyashov.entity.Master;
 import ru.dponyashov.exception.NotFoundEntityException;
 import ru.dponyashov.repository.ClientRepository;
 import ru.dponyashov.safety.DataEncoder;
@@ -68,7 +69,13 @@ public class ClientServiceImpl implements ClientService {
     @Override
     @Transactional
     public Client save(Client client){
-        Client savedClient = clientRepository.save(dataEncoder.encode(client));
+        Client clientForSave = Client.builder().
+                id(client.getId()).
+                name(client.getName()).
+                phone(client.getPhone()).
+                mail(client.getMail()).
+                build();
+        Client savedClient = clientRepository.save(dataEncoder.encode(clientForSave));
         log.info("Записаны данные клиента с id: {}", savedClient.getId());
         client.setId(savedClient.getId());
         return dataEncoder.decode(client);

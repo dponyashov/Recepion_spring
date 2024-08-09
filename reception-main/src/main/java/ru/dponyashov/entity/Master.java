@@ -3,19 +3,16 @@ package ru.dponyashov.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import ru.dponyashov.safety.annotation.StringToEncode;
 
 @Entity
 @Table(name = "t_master", schema = "main_schema")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-
 @NamedQueries(
         @NamedQuery(name = "Master.findByFilter",
                 query = """

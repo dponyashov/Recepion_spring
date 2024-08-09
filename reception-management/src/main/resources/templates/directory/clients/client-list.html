@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ресепшен. Справочники. Клиенты</title>
+</head>
+<body>
+  <a data-th-href="@{/directories}">к списку справочников</a>
+  <br>
+  <a data-th-href="@{/directories/clients/create}">+ Новый клиент</a>
+  <h3>Клиенты</h3>
+  <form method="get" data-th-action="@{/directories/clients}">
+      <label>Фильтр:
+          <input type="text" name="clientName" data-th-value="${filterName}">
+          <input type="text" name="clientPhone" data-th-value="${filterPhone}">
+          <button type="submit">Поиск</button>
+      </label>
+  </form>
+  <table>
+      <thead>
+          <th>id</th>
+          <th>Клиент</th>
+          <th>Телефон</th>
+          <th>Почта</th>
+      </thead>
+      <tbody>
+          <tr data-th-each="client: ${clients}">
+              <td data-th-text="${client.id}"></td>
+              <td>
+                  <a data-th-href="@{/directories/clients/{clientId}(clientId=${client.id})}"
+                     data-th-text="${client.name}"></a>
+              </td>
+              <td  data-th-text="${client.phone}"></td>
+              <td  data-th-text="${client.mail}"></td>
+          </tr>
+      </tbody>
+  </table>
+
+</body>
+</html>

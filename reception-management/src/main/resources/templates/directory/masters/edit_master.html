@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Редактирование мастера &laquo;[[${master.name}]]&raquo; &ndash; Ресепшен</title>
+</head>
+<body>
+<a data-th-href="@{/directories/masters/{masterId}(masterId=${master.id})}">&larr; к мастеру</a>
+<h1>Редактирование мастера &laquo;[[${master.name}]]&raquo;</h1>
+<div data-th-if="${errors}">
+  <h2>Ошибки</h2>
+  <ul>
+    <li data-th-each="error: ${errors}" data-th-text="${error}"></li>
+  </ul>
+</div>
+<form method="post" data-th-action="@{/directories/masters/{masterId}/edit(masterId=${master.id})}">
+  <label>
+    Имя:<br>
+    <input type="text" name="name" data-th-value="${new_master != null ? new_master.name : master.name}">
+  </label><br>
+  <label>
+    Телефон:<br>
+    <input type="text" name="phone" data-th-value="${new_master != null ? new_master.phone : master.phone}">
+  </label><br>
+  <button type="submit">Изменить</button>
+</form>
+</body>
+</html>

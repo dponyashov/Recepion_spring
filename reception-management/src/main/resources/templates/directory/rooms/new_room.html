@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Новое помещение &ndash; Ресепшен. Справочники.</title>
+</head>
+<body>
+<a data-th-href="@{/directories/rooms}">&larr; к списку помещений</a>
+<h1>Новое помещение</h1>
+<div data-th-if="${errors}">
+  <h2>Ошибки</h2>
+  <ul>
+    <li data-th-each="error: ${errors}" data-th-text="${error}"></li>
+  </ul>
+</div>
+<form method="post" data-th-action="@{/directories/rooms/create}">
+  <label>
+    Помещение:<br>
+    <input type="text" name="number" data-th-value="${room?.number}">
+  </label><br>
+  <label>
+    Описание:<br>
+    <textarea name="note" data-th-text="${room?.note}"> </textarea>
+  </label><br>
+  <button type="submit">Создать</button>
+</form>
+</body>
+</html>

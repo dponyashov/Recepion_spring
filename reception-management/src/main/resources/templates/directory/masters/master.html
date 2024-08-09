@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>[[${master.name}]] &ndash; Ресепшен</title>
+</head>
+<body>
+<h1 data-th-text="${master.name}"></h1>
+<a data-th-href="@{/directories/masters}">&larr; к списку мастеров</a>
+
+<ul>
+  <li> <strong>ID</strong>:<span data-th-text="${master.id}"></span></li>
+  <li> <strong>Имя</strong>:<span data-th-text="${master.name}"></span></li>
+  <li> <strong>Телефон</strong>:<span data-th-text="${master.phone}"></span></li>
+</ul>
+<a data-th-href="@{/directories/masters/{masterId}/edit(masterId=${master.id})}">Изменить</a>
+<form method="post" data-th-action="@{/directories/masters/{masterId}/delete(masterId=${master.id})}">
+  <button type="submit">Удалить</button>
+</form>
+</body>
+</html>
