@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.dponyashov.dto.filter.FilterClient;
 import ru.dponyashov.entity.Client;
-import ru.dponyashov.entity.Master;
 import ru.dponyashov.exception.NotFoundEntityException;
 import ru.dponyashov.repository.ClientRepository;
 import ru.dponyashov.safety.DataEncoder;

@@ -6,9 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.dponyashov.dto.RoomDto;
 import ru.dponyashov.exception.BadRequestException;
+import ru.dponyashov.exception.NoFoundDirectoryElementException;
 import ru.dponyashov.service.RoomService;
-
-import java.util.NoSuchElementException;
 
 @Controller
 @RequestMapping("/directories/rooms/{roomId:\\d+}")
