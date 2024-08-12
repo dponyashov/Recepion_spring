@@ -54,7 +54,6 @@ public class ClientController {
                             .path("/api/client/{clientId}")
                             .build(Map.of("clientId", clientFromDB.getId())))
                     .body(clientFromDB);
-//            return new ResponseEntity<>(clientFromDB, HttpStatus.CREATED);
         }
     }
 

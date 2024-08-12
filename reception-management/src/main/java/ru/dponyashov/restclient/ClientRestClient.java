@@ -7,6 +7,7 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 import ru.dponyashov.dto.ClientDto;
+import ru.dponyashov.dto.NotificationDto;
 import ru.dponyashov.exception.BadRequestException;
 import ru.dponyashov.service.ClientService;
 
@@ -17,6 +18,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ClientRestClient implements ClientService {
     private static final ParameterizedTypeReference<List<ClientDto>> CLIENT_TYPE_REFERENCE =
+            new ParameterizedTypeReference<>(){};
+    private static final ParameterizedTypeReference<List<NotificationDto>> NOTIFY_TYPE_REFERENCE =
             new ParameterizedTypeReference<>(){};
 
     private final RestClient clientRestClient;
@@ -32,13 +35,13 @@ public class ClientRestClient implements ClientService {
     }
 
     @Override
-    public ClientDto createClient(String name, String phone, String mail) {
+    public ClientDto createClient(String name, String phone, String mail, List<NotificationDto> notifications) {
         try {
             return clientRestClient
                     .post()
                     .uri("/api/client")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body(new ClientDto(null, name, phone, mail))
+                    .body(new ClientDto(null, name, phone, mail, notifications))
                     .retrieve()
                     .body(ClientDto.class);
         } catch (HttpClientErrorException.BadRequest exception){
@@ -62,13 +65,14 @@ public class ClientRestClient implements ClientService {
     }
 
     @Override
-    public void updateClient(Long clientId, String name, String phone, String mail) {
+    public void updateClient(Long clientId, String name, String phone, String mail,
+                             List<NotificationDto> notifications) {
         try {
             clientRestClient
                     .put()
                     .uri("/api/client/{clientId}", clientId)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body(new ClientDto(clientId, name, phone, mail))
+                    .body(new ClientDto(clientId, name, phone, mail, notifications))
                     .retrieve()
                     .toBodilessEntity();
         } catch (HttpClientErrorException.BadRequest exception){
@@ -87,6 +91,29 @@ public class ClientRestClient implements ClientService {
                     .toBodilessEntity();
         } catch(HttpClientErrorException.NotFound exception){
             throw new NoSuchElementException(exception);
+        }
+    }
+
+    @Override
+    public List<NotificationDto> notificationList() {
+        return clientRestClient
+                .get()
+                .uri("/api/notification")
+                .retrieve()
+                .body(NOTIFY_TYPE_REFERENCE);
+    }
+
+    @Override
+    public Optional<NotificationDto> findNotifyById(Long notifyId) {
+        try {
+            return Optional.ofNullable(clientRestClient
+                    .get()
+                    .uri("/api/notification/{notifyId}", notifyId)
+                    .retrieve()
+                    .body(NotificationDto.class)
+            );
+        } catch(HttpClientErrorException.NotFound exception){
+            return Optional.empty();
         }
     }
 }

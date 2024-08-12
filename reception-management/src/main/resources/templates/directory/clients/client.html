@@ -14,6 +14,13 @@
   <li> <strong>Телефон</strong>:<span data-th-text="${client.phone}"></span></li>
   <li> <strong>Почта</strong>:<span data-th-text="${client.mail}"></span></li>
 </ul>
+<br>
+Оповещения:
+<br>
+  <li data-th-each="notification: ${client.notifications}">
+    <span data-th-text="${notification.name}"></span>
+  </li>
+<br>
 <a data-th-href="@{/directories/clients/{clientId}/edit(clientId=${client.id})}">Изменить</a>
 <form method="post" data-th-action="@{/directories/clients/{clientId}/delete(clientId=${client.id})}">
   <button type="submit">Удалить</button>

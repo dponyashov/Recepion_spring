@@ -15,6 +15,11 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@NamedQueries(
+        @NamedQuery(name="Notification.findAll",
+                query = "select n from Notification n"
+        )
+)
 public class Notification {
 
     @Id

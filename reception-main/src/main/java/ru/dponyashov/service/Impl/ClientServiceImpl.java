@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.dponyashov.dto.filter.FilterClient;
 import ru.dponyashov.entity.Client;
+import ru.dponyashov.entity.Notification;
 import ru.dponyashov.exception.NotFoundEntityException;
 import ru.dponyashov.repository.ClientRepository;
+import ru.dponyashov.repository.NotificationRepository;
 import ru.dponyashov.safety.DataEncoder;
 import ru.dponyashov.service.ClientService;
 import ru.dponyashov.utils.StringUtils;
@@ -23,6 +25,7 @@ public class ClientServiceImpl implements ClientService {
 
     private final DataEncoder dataEncoder;
     private final ClientRepository clientRepository;
+    private final NotificationRepository notificationRepository;
 
     @Override
     public List<Client> findAll(){
@@ -42,6 +45,17 @@ public class ClientServiceImpl implements ClientService {
                 ).stream()
                 .peek(dataEncoder::decode)
                 .toList();
+    }
+
+    @Override
+    public Notification findNotifyById(Long notifyId) {
+        return notificationRepository.findById(notifyId)
+                .orElseThrow(()-> new NotFoundEntityException("Notification", "id", String.valueOf(notifyId)));
+    }
+
+    @Override
+    public List<Notification> findAllNotification() {
+        return notificationRepository.findAllNotification();
     }
 
     @Override
@@ -73,6 +87,7 @@ public class ClientServiceImpl implements ClientService {
                 name(client.getName()).
                 phone(client.getPhone()).
                 mail(client.getMail()).
+                notifications(client.getNotifications()).
                 build();
         Client savedClient = clientRepository.save(dataEncoder.encode(clientForSave));
         log.info("Записаны данные клиента с id: {}", savedClient.getId());

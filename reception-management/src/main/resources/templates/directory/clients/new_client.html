@@ -5,7 +5,7 @@
   <title>Новый клиент &ndash; Ресепшен. Справочники.</title>
 </head>
 <body>
-<a data-th-href="@{/directories/rooms}">&larr; к списку клиентов</a>
+<a data-th-href="@{/directories/clients}">&larr; к списку клиентов</a>
 <h1>Новый клиент</h1>
 <div data-th-if="${errors}">
   <h2>Ошибки</h2>
@@ -13,20 +13,49 @@
     <li data-th-each="error: ${errors}" data-th-text="${error}"></li>
   </ul>
 </div>
-<form method="post" data-th-action="@{/directories/clients/create}">
+<form method="post"
+      data-th-action="@{/directories/clients/create}">
+  <fieldset>
   <label>
     Клиент:<br>
-    <input type="text" name="name" data-th-value="${client?.name}">
+    <input type="text"
+           name="name"
+           id="name"
+           data-th-value="${client?.name}">
   </label><br>
   <label>
     Телефон:<br>
-    <input type="text" name="phone" data-th-value="${client?.phone}">
+    <input type="text"
+           name="phone"
+           id="phone"
+
+           data-th-value="${client?.phone}">
   </label><br>
   <label>
     Почта:<br>
-    <input type="text" name="mail" data-th-value="${client?.mail}">
+    <input type="text"
+           name="mail"
+           id="mail"
+           data-th-value="${client?.mail}">
   </label><br>
+  <br>
+  Оповещения:
+  <br>
+  <table>
+    <tr data-th-each="notify: ${notificationList}">
+      <td>
+        <input type="checkbox"
+               name="notificationList"
+               id="notificationList"
+               data-th-value="${notify.id}"
+               data-th-text="${notify.name}"
+               data-th-checked="${#lists.contains(notifySelected, notify)}">
+      </td>
+    </tr>
+  </table>
+  <br>
   <button type="submit">Создать</button>
+  </fieldset>
 </form>
 </body>
 </html>

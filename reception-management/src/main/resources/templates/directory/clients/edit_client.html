@@ -13,20 +13,47 @@
     <li data-th-each="error: ${errors}" data-th-text="${error}"></li>
   </ul>
 </div>
-<form method="post" data-th-action="@{/directories/clients/{clientId}/edit(clientId=${client.id})}">
+<form method="post"
+      data-th-action="@{/directories/clients/{clientId}/edit(clientId=${client.id})}">
+  <fieldset>
   <label>
     Имя:<br>
-    <input type="text" name="name" data-th-value="${new_client != null ? new_client.name : client.name}">
+    <input type="text"
+           name="name"
+           id="name"
+           data-th-value="${new_client != null ? new_client.name : client.name}">
   </label><br>
   <label>
     Телефон:<br>
-    <input type="text" name="phone" data-th-value="${new_client != null ? new_client.phone : client.phone}">
+    <input type="text"
+           name="phone"
+           id="phone"
+           data-th-value="${new_client != null ? new_client.phone : client.phone}">
   </label><br>
   <label>
     Телефон:<br>
-    <input type="text" name="mail" data-th-value="${new_client != null ? new_client.mail : client.mail}">
+    <input type="text"
+           name="mail"
+           id="mail"
+           data-th-value="${new_client != null ? new_client.mail : client.mail}">
   </label><br>
+  Оповещения:
+  <br>
+  <div data-th-each="notify: ${notificationList}">
+    <label>
+      <input type="checkbox"
+             data-th-name="notificationList"
+             id="notificationList"
+             data-th-value="${notify.id}"
+             data-th-text="${notify.name}"
+             data-th-checked="${#lists.contains(client.notifications, notify)}">
+    </label>
+    <br>
+  </div>
+  <br>
+
   <button type="submit">Изменить</button>
+  </fieldset>
 </form>
 </body>
 </html>
