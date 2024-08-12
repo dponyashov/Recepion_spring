@@ -1,6 +1,5 @@
 package ru.dponyashov.service;
 
-import org.springframework.web.bind.annotation.GetMapping;
 import ru.dponyashov.dto.ClientDto;
 import ru.dponyashov.dto.NotificationDto;
 

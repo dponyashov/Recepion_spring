@@ -15,7 +15,7 @@ public interface ClientService {
 
     void delete(Long id);
 
-    public Client save(Client client);
+    Client save(Client client);
 
     List<Client> findWithFilter(FilterClient filterClient);
 

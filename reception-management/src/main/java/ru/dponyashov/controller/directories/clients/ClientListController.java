@@ -55,9 +55,7 @@ public class ClientListController {
         List<NotificationDto> selectedNotify = new ArrayList<>();
         if(selectedNotifications != null) {
             selectedNotify = Arrays.stream(selectedNotifications)
-                    .map(id -> {
-                        return clientService.findNotifyById(id).orElse(null);
-                    })
+                    .map(id -> clientService.findNotifyById(id).orElse(null))
                     .toList();
         }
         try {
