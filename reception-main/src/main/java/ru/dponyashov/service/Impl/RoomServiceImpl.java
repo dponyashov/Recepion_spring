@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.dponyashov.dto.RoomDto;
 import ru.dponyashov.entity.Room;
 import ru.dponyashov.exception.NotFoundEntityException;
+import ru.dponyashov.mappers.Mapper;
 import ru.dponyashov.repository.RoomRepository;
 import ru.dponyashov.service.RoomService;
 
@@ -16,39 +18,44 @@ import java.util.List;
 @Log4j2
 public class RoomServiceImpl implements RoomService {
     private final RoomRepository roomRepository;
+    private final Mapper<Room, RoomDto> roomMapper;
 
     @Override
-    public List<Room> findAll(){
-        return roomRepository.findAll();
+    public List<RoomDto> findAll(){
+        return roomRepository.findAll().stream()
+                .map(roomMapper::toDto)
+                .toList();
     }
 
     @Override
-    public Room findById(Long id){
-        return roomRepository.findById(id)
-                .orElseThrow(() -> new NotFoundEntityException("Room", "id", String.valueOf(id)));
+    public RoomDto findById(Long id){
+        return roomMapper.toDto(roomRepository.findById(id)
+                .orElseThrow(() -> new NotFoundEntityException("Room", "id", String.valueOf(id)))
+        );
     }
 
     @Override
-    public List<Room> findByNumber(String number){
+    public List<RoomDto> findByNumber(String number){
         if (number == null || number.isBlank()){
-            return roomRepository.findAll();
+            return findAll();
         } else {
-            return roomRepository.findByNumber("%" + number + "%");
+            return roomRepository.findByNumber("%" + number + "%").stream()
+                    .map(roomMapper::toDto)
+                    .toList();
         }
     }
 
     @Override
-    @Transactional
     public void delete(Long id){
         roomRepository.deleteById(id);
         log.info("Удалено помещение с id: {}", id);
     }
 
     @Override
-    @Transactional
-    public Room save(Room room){
-        Room savedRoom = roomRepository.save(room);
+    public RoomDto save(RoomDto room){
+        Room roomForSave = roomMapper.toEntity(room);
+        Room savedRoom = roomRepository.save(roomForSave);
         log.info("Записаны данные помещения с id: {}", savedRoom.getId());
-        return savedRoom;
+        return roomMapper.toDto(savedRoom);
     }
 }

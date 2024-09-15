@@ -59,9 +59,9 @@ public class ClientListController {
                     .toList();
         }
         try {
-            ClientDto client = clientService.createClient(newClient.name(), newClient.phone(),
-                    newClient.mail(), selectedNotify);
-            return "redirect:/directories/clients/%d".formatted(client.id());
+            ClientDto client = clientService.createClient(newClient.getName(), newClient.getPhone(),
+                    newClient.getMail(), selectedNotify);
+            return "redirect:/directories/clients/%d".formatted(client.getId());
         }  catch(BadRequestException exception){
             model.addAttribute("client", newClient);
             model.addAttribute("notifySelected", selectedNotify);

@@ -6,8 +6,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import ru.dponyashov.dto.RecordDto;
 import ru.dponyashov.dto.RecordFilter;
-import ru.dponyashov.enums.RecordStatus;
 import ru.dponyashov.entity.RecordEntity;
+import ru.dponyashov.enums.RecordStatus;
 import ru.dponyashov.exception.*;
 import ru.dponyashov.repository.RecordRepository;
 import ru.dponyashov.service.RecordService;
@@ -25,6 +25,7 @@ public class RecordServiceImpl implements RecordService {
     public List<RecordDto> findAll() {
         return recordRepository.findAll().stream()
                 .map(entity -> RecordDto.builder()
+                        .id(entity.getId())
                         .name(entity.getName())
                         .phone(entity.getPhone())
                         .note(entity.getNote())
@@ -38,6 +39,7 @@ public class RecordServiceImpl implements RecordService {
     public RecordDto findById(Long id) {
         return recordRepository.findById(id).stream()
                 .map(entity -> RecordDto.builder()
+                        .id(entity.getId())
                         .name(entity.getName())
                         .phone(entity.getPhone())
                         .note(entity.getNote())
@@ -57,6 +59,7 @@ public class RecordServiceImpl implements RecordService {
                 ).stream()
                 .map(entity ->
                         RecordDto.builder()
+                                .id(entity.getId())
                                 .phone(entity.getPhone())
                                 .name(entity.getName())
                                 .note(entity.getNote())
@@ -127,6 +130,7 @@ public class RecordServiceImpl implements RecordService {
         RecordEntity savedEntity = recordRepository.save(entity);
         log.info("Записаны данные онлайн записи с id: {}", savedEntity.getId());
         return RecordDto.builder()
+                .id(savedEntity.getId())
                 .phone(savedEntity.getPhone())
                 .name(savedEntity.getName())
                 .note(savedEntity.getNote())

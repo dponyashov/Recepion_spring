@@ -11,7 +11,7 @@
   <h3>Помещения</h3>
   <form method="get" data-th-action="@{/directories/rooms}">
       <label>Фильтр:
-          <input type="text" name="filterNumber" data-th-value="${filterNumber}">
+          <input type="text" name="filterNumber" data-th-value="${filterNumber}" placeholder="номер комнаты">
           <button type="submit">Поиск</button>
       </label>
   </form>

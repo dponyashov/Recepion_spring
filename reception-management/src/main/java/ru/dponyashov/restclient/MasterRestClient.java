@@ -88,4 +88,13 @@ public class MasterRestClient implements MasterService {
             return Optional.empty();
         }
     }
+
+    @Override
+    public List<MasterDto> findAll() {
+        return masterRestClient
+                .get()
+                .uri("/api/master")
+                .retrieve()
+                .body(MASTER_TYPE_REFERENCE);
+    }
 }

@@ -8,8 +8,10 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+import ru.dponyashov.dto.MasterDto;
 import ru.dponyashov.dto.filter.FilterMaster;
 import ru.dponyashov.entity.Master;
+import ru.dponyashov.mappers.Mapper;
 import ru.dponyashov.service.MasterService;
 
 import java.util.List;
@@ -21,8 +23,10 @@ import java.util.Map;
 public class MasterController {
     private final MasterService masterService;
 
+    private final Mapper<Master, MasterDto> masterMapper;
+
     @GetMapping
-    public ResponseEntity<List<Master>> findClient(FilterMaster filterMaster){
+    public ResponseEntity<List<MasterDto>> findClient(FilterMaster filterMaster){
         if(filterMaster != null){
             return new ResponseEntity<>(masterService.findWithFilter(filterMaster), HttpStatus.OK);
         } else {
@@ -31,13 +35,13 @@ public class MasterController {
     }
 
     @GetMapping("/{idMaster:\\d+}")
-    public ResponseEntity<Master> findById(@PathVariable("idMaster") Long id){
-        Master masterFromDB =  masterService.findById(id);
+    public ResponseEntity<MasterDto> findById(@PathVariable("idMaster") Long id){
+        MasterDto masterFromDB =  masterService.findById(id);
         return new ResponseEntity<>(masterFromDB, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Master> saveMaster(@Valid @RequestBody Master newMaster,
+    public ResponseEntity<MasterDto> saveMaster(@Valid @RequestBody MasterDto newMaster,
                                              BindingResult bindingResult,
                                              UriComponentsBuilder uriComponentsBuilder) throws BindException {
         if(bindingResult.hasErrors()){
@@ -47,18 +51,18 @@ public class MasterController {
                 throw new BindException(bindingResult);
             }
         } else {
-            Master masterFromDB = masterService.save(newMaster);
+            MasterDto masterFromDB = masterService.save(newMaster);
             return ResponseEntity
                     .created(uriComponentsBuilder
                             .path("/api/room/{masterId}")
-                            .build(Map.of("masterId", newMaster.getId())))
+                            .build(Map.of("masterId", masterFromDB.getId())))
                     .body(masterFromDB);
         }
     }
 
     @PutMapping("/{idMaster:\\d+}")
-    public ResponseEntity<Master> saveMaster(@PathVariable("idMaster") Long id,
-                                             @Valid @RequestBody Master master,
+    public ResponseEntity<MasterDto> saveMaster(@PathVariable("idMaster") Long id,
+                                             @Valid @RequestBody MasterDto master,
                                              BindingResult bindingResult) throws BindException {
         if(bindingResult.hasErrors()){
             if(bindingResult instanceof BindException exception){
@@ -68,7 +72,7 @@ public class MasterController {
             }
         } else {
             master.setId(id);
-            Master masterFromDB = masterService.save(master);
+            MasterDto masterFromDB = masterService.save(master);
             return new ResponseEntity<>(masterFromDB, HttpStatus.OK);
         }
     }

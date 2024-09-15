@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование записи &laquo;[[${reception.dateOfVisit}]]&raquo; &ndash; Ресепшен</title>
+</head>
+<body>
+    <a data-th-href="@{/receptions/{receptionId}(receptionId=${reception.id})}">&larr; к записи</a>
+    <h1>Редактирование записи &laquo;[[${reception.dateOfVisit}]] : [[${reception.startTime}]]&raquo;</h1>
+    <form method="post"
+          data-th-action="@{/receptions/{receptionId}/edit(receptionId=${reception.id})}">
+        <label>Клиент:
+            <select id="client" name="client"
+                    data-th-value="${new_reception != null ? new_reception?.client?.id : reception?.client?.id}"
+                    data-th-selected="${new_reception != null ? new_reception?.client?.id : reception?.client?.id}">
+                <option data-th-each="client: ${clientList}"
+                        data-th-value="${client.id}"
+                        data-th-text="${client.name}"
+                        data-th-selected="${client.id == reception.client.id}"></option>
+
+            </select>
+        </label>
+        <br>
+        <label>Мастер:
+            <select id="master" name="master"
+                    data-th-value="${new_reception != null ? new_reception?.master?.id : reception?.master?.id}">
+                <option data-th-each="master: ${masterList}"
+                        data-th-value="${master.id}"
+                        data-th-text="${master.name}"
+                        data-th-selected="${master.id == reception.master.id}"></option>
+            </select>
+        </label>
+        <br>
+        <label>Помещение:
+            <select id="room" name="room"
+                data-th-value="${new_reception != null ? new_reception?.room?.id : reception?.room?.id}">
+                <option data-th-each="room: ${roomList}"
+                        data-th-value="${room.id}"
+                        data-th-text="${room.number}"
+                        data-th-selected="${room.id == reception.room.id}"></option>
+            </select>
+        </label>
+        <br>
+        <label>Дата записи:
+            <input type="date" id="dateOfVisit" name="dateOfVisit"
+                   data-th-value="${new_reception != null ? new_reception?.dateOfVisit : reception?.dateOfVisit}">
+        </label>
+        <br>
+        <label>Время начала
+        <input type="time" id="startTime" name="startTime"
+               data-th-value="${new_reception != null ? new_reception?.startTime : reception?.startTime}">
+        </label>
+        </br>
+        <label>Время окончания
+        <input type="time" id="finishTime" name="finishTime"
+               data-th-value="${new_reception != null ? new_reception?.finishTime : reception?.finishTime}">
+        </label>
+        </br>
+        <label>Описание
+            <br>
+            <textarea name="details" id="details"
+                      data-th-text="${new_reception != null ? new_reception?.details : reception?.details}">
+            </textarea>
+        </label>
+        <br>
+        <button type="submit">Сохранить</button>
+    </form>
+</body>
+</html>

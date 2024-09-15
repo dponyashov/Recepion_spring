@@ -8,6 +8,7 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+import ru.dponyashov.dto.ReceptionDto;
 import ru.dponyashov.dto.filter.FilterReception;
 import ru.dponyashov.entity.Reception;
 import ru.dponyashov.service.ReceptionService;
@@ -23,7 +24,7 @@ public class ReceptionController {
     private final ReceptionService receptionService;
 
     @GetMapping
-    public ResponseEntity<List<Reception>> findReception(FilterReception filterReception){
+    public ResponseEntity<List<ReceptionDto>> findReception(FilterReception filterReception){
         if(filterReception != null){
             return new ResponseEntity<>(receptionService.findWithFilter(filterReception), HttpStatus.OK);
         } else {
@@ -32,8 +33,8 @@ public class ReceptionController {
     }
 
     @GetMapping("/{idReception:\\d+}")
-    public ResponseEntity<Reception> findById(@PathVariable("idReception") Long id){
-        Reception receptionFromDB = receptionService.findById(id);
+    public ResponseEntity<ReceptionDto> findById(@PathVariable("idReception") Long id){
+        ReceptionDto receptionFromDB = receptionService.findById(id);
         return new ResponseEntity<>(receptionFromDB, HttpStatus.OK);
     }
 
@@ -44,7 +45,7 @@ public class ReceptionController {
     }
 
     @PostMapping
-    public ResponseEntity<Reception> saveReception(@Valid @RequestBody Reception newReception,
+    public ResponseEntity<ReceptionDto> saveReception(@Valid @RequestBody ReceptionDto newReception,
                                                    BindingResult bindingResult,
                                                    UriComponentsBuilder uriComponentsBuilder) throws BindException {
         if(bindingResult.hasErrors()){
@@ -54,18 +55,18 @@ public class ReceptionController {
                 throw new BindException(bindingResult);
             }
         } else {
-            Reception receptionFromDB = receptionService.save(newReception);
+            ReceptionDto receptionFromDB = receptionService.save(newReception);
             return ResponseEntity
                     .created(uriComponentsBuilder
                             .path("/api/reception/{receptionId}")
-                            .build(Map.of("receptionId", receptionFromDB.getId())))
+                            .build(Map.of("receptionId", receptionFromDB.id())))
                     .body(receptionFromDB);
         }
     }
 
     @PutMapping("/{idReception:\\d+}")
-    public ResponseEntity<Reception> saveReception(@PathVariable("idReception") Long id,
-                                                   @Valid @RequestBody Reception reception,
+    public ResponseEntity<ReceptionDto> saveReception(@PathVariable("idReception") Long id,
+                                                   @Valid @RequestBody ReceptionDto reception,
                                                    BindingResult bindingResult) throws BindException{
         if(bindingResult.hasErrors()){
             if(bindingResult instanceof BindException exception){
@@ -74,8 +75,17 @@ public class ReceptionController {
                 throw new BindException(bindingResult);
             }
         } else {
-            reception.setId(id);
-            Reception receptionFromDB = receptionService.save(reception);
+            ReceptionDto receptionForSave = ReceptionDto.builder()
+                    .id(id)
+                    .client(reception.client())
+                    .master(reception.master())
+                    .room(reception.room())
+                    .dateOfVisit(reception.dateOfVisit())
+                    .startTime(reception.startTime())
+                    .finishTime(reception.finishTime())
+                    .details(reception.details())
+                    .build();
+            ReceptionDto receptionFromDB = receptionService.save(receptionForSave);
             return new ResponseEntity<>(receptionFromDB, HttpStatus.OK);
         }
     }

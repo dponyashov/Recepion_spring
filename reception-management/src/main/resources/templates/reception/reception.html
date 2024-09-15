@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>[[${reception.dateOfVisit}]] &ndash; Ресепшен</title>
+</head>
+<body>
+<h1 data-th-text="|Запись ${reception.dateOfVisit} : ${reception.startTime}|"></h1>
+<a data-th-href="@{/receptions}">&larr; к списку записей</a>
+
+<ul>
+    <li> <strong>ID</strong>:<span data-th-text="${reception.id}"></span></li>
+    <li> <strong>Дата</strong>:<span data-th-text="${reception.dateOfVisit}"></span></li>
+    <li> <strong>Начало</strong>:<span data-th-text="${reception.startTime}"></span></li>
+    <li> <strong>Окончание</strong>:<span data-th-text="${reception.finishTime}"></span></li>
+    <li> <strong>Клиент</strong>:<span data-th-text="${reception.client.name}"></span></li>
+    <li> <strong>Мастер</strong>:<span data-th-text="${reception.master.name}"></span></li>
+    <li> <strong>Помещение</strong>:<span data-th-text="${reception.room.number}"></span></li>
+    <li> <strong>Детали</strong>:<span data-th-text="${reception.details}"></span></li>
+</ul>
+<br>
+<a data-th-href="@{/receptions/{receptionId}/edit(receptionId=${reception.id})}">Изменить</a>
+<form method="post" data-th-action="@{/receptions/{receptionId}/delete(receptionId=${reception.id})}">
+    <button type="submit">Удалить</button>
+</form>
+</body>
+</html>

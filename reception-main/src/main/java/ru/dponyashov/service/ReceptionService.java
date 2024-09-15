@@ -1,20 +1,20 @@
 package ru.dponyashov.service;
 
+import ru.dponyashov.dto.ReceptionDto;
 import ru.dponyashov.dto.filter.FilterReception;
-import ru.dponyashov.entity.Reception;
 
 import java.util.List;
 
 public interface ReceptionService {
-    List<Reception> findAll();
+    List<ReceptionDto> findAll();
 
-    Reception findById(Long id);
+    ReceptionDto findById(Long id);
 
     void sendNotifications(Long id);
 
-    Reception save(Reception reception);
+    ReceptionDto save(ReceptionDto reception);
 
     void delete(Long id);
 
-    List<Reception> findWithFilter(FilterReception filterReception);
+    List<ReceptionDto> findWithFilter(FilterReception filterReception);
 }

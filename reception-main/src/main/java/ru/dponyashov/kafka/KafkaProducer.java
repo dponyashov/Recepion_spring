@@ -1,10 +1,10 @@
 package ru.dponyashov.kafka;
 
-import ru.dponyashov.entity.Reception;
+import ru.dponyashov.dto.ReceptionDto;
 
 public interface KafkaProducer {
 
-    void sendMail(Reception reception);
+    void sendMail(ReceptionDto reception);
 
-    void sendPhone(Reception reception);
+    void sendPhone(ReceptionDto reception);
 }

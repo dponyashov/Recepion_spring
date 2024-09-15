@@ -7,3 +7,7 @@ reception:
       uri: http://localhost:8080
       username: ${REST_USER}
       password: ${REST_PASSWORD}
+    online-record:
+      uri: http://localhost:8082
+      username: ${REST_USER}
+      password: ${REST_PASSWORD}

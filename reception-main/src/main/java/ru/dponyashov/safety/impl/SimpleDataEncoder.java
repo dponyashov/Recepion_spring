@@ -35,7 +35,7 @@ public class SimpleDataEncoder implements DataEncoder {
                     StringFieldEncode(field, instance, coder);
                 } else if (!field.getType().isPrimitive()) {
                     Object objectField = fieldObject(field, instance);
-                    if(objectField != null && objectField.getClass().isAnnotationPresent(Entity.class)){
+                    if(objectField != null && objectField.getClass().isAnnotationPresent(StringToEncode.class)){
                         objectEncode(objectField, coder);
                     }
                 }

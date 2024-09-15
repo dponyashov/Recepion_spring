@@ -8,6 +8,7 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+import ru.dponyashov.dto.RoomDto;
 import ru.dponyashov.entity.Room;
 import ru.dponyashov.service.RoomService;
 
@@ -21,18 +22,18 @@ public class RoomController {
     private final RoomService roomService;
 
     @GetMapping
-    public ResponseEntity<List<Room>> findAll(@RequestParam(name="number", required = false) String numberFilter){
+    public ResponseEntity<List<RoomDto>> findAll(@RequestParam(name="number", required = false) String numberFilter){
         return new ResponseEntity<>(roomService.findByNumber(numberFilter), HttpStatus.OK);
     }
 
     @GetMapping("/{roomId:\\d+}")
-    public ResponseEntity<Room> findById(@PathVariable("roomId") Long id){
-        Room roomFromDB = roomService.findById(id);
+    public ResponseEntity<RoomDto> findById(@PathVariable("roomId") Long id){
+        RoomDto roomFromDB = roomService.findById(id);
         return new ResponseEntity<>(roomFromDB, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Room> saveRoom(@Valid @RequestBody Room newRoom,
+    public ResponseEntity<RoomDto> saveRoom(@Valid @RequestBody RoomDto newRoom,
                                            BindingResult bindingResult,
                                            UriComponentsBuilder uriComponentsBuilder) throws BindException {
         if(bindingResult.hasErrors()){
@@ -42,18 +43,18 @@ public class RoomController {
                 throw new BindException(bindingResult);
             }
         } else {
-            Room roomFromDB = roomService.save(newRoom);
+            RoomDto roomFromDB = roomService.save(newRoom);
             return ResponseEntity
                     .created(uriComponentsBuilder
                             .path("/api/room/{roomId}")
-                            .build(Map.of("roomId", roomFromDB.getId())))
+                            .build(Map.of("roomId", roomFromDB.id())))
                     .body(roomFromDB);
         }
     }
 
     @PutMapping("/{roomId:\\d+}")
-    public ResponseEntity<Room> saveRoom(@PathVariable("roomId") Long id,
-                                         @Valid @RequestBody Room room,
+    public ResponseEntity<RoomDto> saveRoom(@PathVariable("roomId") Long id,
+                                         @Valid @RequestBody RoomDto room,
                                          BindingResult bindingResult) throws BindException{
         if(bindingResult.hasErrors()){
             if(bindingResult instanceof BindException exception){
@@ -62,8 +63,12 @@ public class RoomController {
                 throw new BindException(bindingResult);
             }
         } else {
-            room.setId(id);
-            Room roomFromDB = roomService.save(room);
+            RoomDto roomForSave = RoomDto.builder()
+                    .id(id)
+                    .number(room.number())
+                    .note(room.note())
+                    .build();
+            RoomDto roomFromDB = roomService.save(roomForSave);
             return new ResponseEntity<>(roomFromDB, HttpStatus.OK);
         }
     }

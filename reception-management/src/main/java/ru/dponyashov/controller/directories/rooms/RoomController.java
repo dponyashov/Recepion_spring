@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.dponyashov.dto.RoomDto;
 import ru.dponyashov.exception.BadRequestException;
-import ru.dponyashov.exception.NoFoundDirectoryElementException;
+import ru.dponyashov.exception.NotFoundDirectoryElementException;
 import ru.dponyashov.service.RoomService;
 
 @Controller
@@ -19,7 +19,7 @@ public class RoomController {
     @ModelAttribute("room")
     public RoomDto room(@PathVariable("roomId") Long roomId){
         return roomService.findRoomById(roomId)
-                .orElseThrow(() -> new NoFoundDirectoryElementException("Помещение не найдено"));
+                .orElseThrow(() -> new NotFoundDirectoryElementException("Помещение не найдено"));
     }
 
     @GetMapping

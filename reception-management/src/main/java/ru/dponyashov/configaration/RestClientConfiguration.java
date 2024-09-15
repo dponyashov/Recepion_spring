@@ -5,9 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.support.BasicAuthenticationInterceptor;
 import org.springframework.web.client.RestClient;
-import ru.dponyashov.restclient.ClientRestClient;
-import ru.dponyashov.restclient.MasterRestClient;
-import ru.dponyashov.restclient.RoomRestClient;
+import ru.dponyashov.restclient.*;
 
 @Configuration
 public class RestClientConfiguration {
@@ -40,6 +38,28 @@ public class RestClientConfiguration {
             @Value("${reception.services.main.username}") String username,
             @Value("${reception.services.main.password}") String password){
         return new ClientRestClient(RestClient.builder()
+                .baseUrl(registrationBaseUri)
+                .requestInterceptor(new BasicAuthenticationInterceptor(username, password))
+                .build());
+    }
+
+    @Bean
+    public OnlineRecordRestClient recordRestClient(
+            @Value("${reception.services.online-record.uri:http://localhost:8082}") String registrationBaseUri,
+            @Value("${reception.services.online-record.username}") String username,
+            @Value("${reception.services.online-record.password}") String password){
+        return new OnlineRecordRestClient(RestClient.builder()
+                .baseUrl(registrationBaseUri)
+                .requestInterceptor(new BasicAuthenticationInterceptor(username, password))
+                .build());
+    }
+
+    @Bean
+    public ReceptionRestClient receptionRestClient(
+            @Value("${reception.services.main.uri:http://localhost:8080}") String registrationBaseUri,
+            @Value("${reception.services.main.username}") String username,
+            @Value("${reception.services.main.password}") String password){
+        return new ReceptionRestClient(RestClient.builder()
                 .baseUrl(registrationBaseUri)
                 .requestInterceptor(new BasicAuthenticationInterceptor(username, password))
                 .build());

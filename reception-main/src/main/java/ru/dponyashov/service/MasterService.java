@@ -1,21 +1,21 @@
 package ru.dponyashov.service;
 
+import ru.dponyashov.dto.MasterDto;
 import ru.dponyashov.dto.filter.FilterMaster;
-import ru.dponyashov.entity.Master;
 
 import java.util.List;
 
 public interface MasterService {
 
-    List<Master> findAll();
+    List<MasterDto> findAll();
 
-    Master findById(Long id);
+    MasterDto findById(Long id);
 
-    List<Master> findByName(String name);
+    List<MasterDto> findByName(String name);
 
-    Master save(Master master);
+    MasterDto save(MasterDto master);
 
     void delete(Long id);
 
-    List<Master> findWithFilter(FilterMaster filterMaster);
+    List<MasterDto> findWithFilter(FilterMaster filterMaster);
 }

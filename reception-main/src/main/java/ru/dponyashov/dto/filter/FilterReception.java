@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Getter
 @Setter
+@StringToEncode
 public class FilterReception {
         @StringToEncode
         private String clientName;

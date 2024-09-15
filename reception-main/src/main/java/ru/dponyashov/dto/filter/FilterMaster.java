@@ -10,6 +10,7 @@ import ru.dponyashov.safety.annotation.StringToEncode;
 @AllArgsConstructor
 @Getter
 @Setter
+@StringToEncode
 public class FilterMaster {
     @StringToEncode
     private String masterName;

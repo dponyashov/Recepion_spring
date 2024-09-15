@@ -1,6 +1,6 @@
 package ru.dponyashov.dto;
 
-import lombok.*;
+import lombok.Builder;
 
 @Builder
 public record NotificationDto(

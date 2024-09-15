@@ -15,4 +15,6 @@ public interface MasterService {
     void updateMaster(Long masterId, String name, String phone);
 
     void deleteMaster(Long id);
+
+    List<MasterDto> findAll();
 }

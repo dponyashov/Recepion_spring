@@ -9,12 +9,14 @@ import ru.dponyashov.enums.RecordStatus;
 @Setter
 @Builder
 public class RecordDto {
+    private Long id;
     private String phone;
     private String name;
     private String note;
     private RecordStatus status;
 
     public void clear() {
+        this.id = null;
         this.phone = "";
         this.name = "";
         this.note = "";

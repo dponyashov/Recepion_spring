@@ -6,6 +6,44 @@
 </head>
 <body>
 <a href="/">на главную</a>
+<br>
+<a data-th-href="@{/receptions/create}">+ Новая запись</a>
 <h2>Записи на прием</h2>
+
+<form method="get" data-th-action="@{/receptions}">
+    <label>Фильтр:
+        <input type="date" id="dateOfVisit" name="dateOfVisit" data-th-value="${filterDate}" placeholder="дата">
+        <input type="text" id="master" name="master" data-th-value="${filterMaster}" placeholder="мастер">
+        <input type="text" id="client" name="client" data-th-value="${filterClient}" placeholder="клиент">
+        <input type="text" id="room" name="room" data-th-value="${filterRoom}" placeholder="помещение">
+        <button type="submit">Поиск</button>
+    </label>
+</form>
+
+<table>
+    <thead>
+        <th>Дата</th>
+        <th>Начало</th>
+        <th>Окончание</th>
+        <th>Мастер</th>
+        <th>Клиент</th>
+        <th>Помещение</th>
+        <th>Детали</th>
+    </thead>
+    <tbody>
+        <tr data-th-each="reception: ${receptionList}">
+            <td data-th-text="${reception.dateOfVisit}"></td>
+            <td data-th-text="${reception.startTime}"></td>
+            <td data-th-text="${reception.finishTime}"></td>
+            <td data-th-text="${reception.master.name}"></td>
+            <td data-th-text="${reception.client.name}"></td>
+            <td data-th-text="${reception.room.number}"></td>
+            <td data-th-text="${reception.details}"></td>
+            <td>
+                <a data-th-href="@{/receptions/{receptionId}(receptionId=${reception.id})}">просмотреть</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
 </body>
 </html>

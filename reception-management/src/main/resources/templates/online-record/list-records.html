@@ -7,5 +7,31 @@
 <body>
 <a href="/">на главную</a>
 <h2>Онлайн заявки</h2>
+<form method="get" data-th-action="@{/online-records}">
+  <label>Фильтр:
+    <input type="text" name="phone" data-th-value="${filterPhone}" placeholder="телефон">
+    <input type="text" name="name" data-th-value="${filterName}" placeholder="имя">
+    <button type="submit">Поиск</button>
+  </label>
+</form>
+<table>
+  <thead>
+  <th>Телефон</th>
+  <th>Клиент</th>
+  <th>Статус</th>
+  <th>Описание</th>
+  </thead>
+  <tbody>
+  <tr data-th-each="record: ${recordList}">
+    <td data-th-text="${record.phone}"></td>
+    <td data-th-text="${record.name}"></td>
+    <td data-th-text="${record.status}"></td>
+    <td data-th-text="${record.note}"></td>
+    <td>
+      <a data-th-href="@{/receptions/{recordId}/online(recordId=${record.id})}">в работу</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
 </body>
 </html>

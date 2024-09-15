@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.dponyashov.dto.MasterDto;
 import ru.dponyashov.exception.BadRequestException;
-import ru.dponyashov.exception.NoFoundDirectoryElementException;
+import ru.dponyashov.exception.NotFoundDirectoryElementException;
 import ru.dponyashov.service.MasterService;
 
 @Controller
@@ -19,7 +19,7 @@ public class MasterController {
     @ModelAttribute("master")
     public MasterDto master(@PathVariable("masterId") Long masterId){
         return masterService.findMasterById(masterId)
-                .orElseThrow(() -> new NoFoundDirectoryElementException("Мастер не найден"));
+                .orElseThrow(() -> new NotFoundDirectoryElementException("Мастер не найден"));
     }
 
     @GetMapping
@@ -36,8 +36,8 @@ public class MasterController {
     public String updateMaster(@ModelAttribute(value = "master", binding = false) MasterDto master,
                                MasterDto newMaster, Model model){
         try {
-            masterService.updateMaster(master.id(), newMaster.name(), newMaster.phone());
-            return "redirect:/directories/masters/%d".formatted(master.id());
+            masterService.updateMaster(master.getId(), newMaster.getName(), newMaster.getPhone());
+            return "redirect:/directories/masters/%d".formatted(master.getId());
         } catch(BadRequestException exception){
             model.addAttribute("new_master", newMaster);
             model.addAttribute("errors", exception.getErrors());
@@ -47,7 +47,7 @@ public class MasterController {
 
     @PostMapping("delete")
     public String deleteMaster(@ModelAttribute("master") MasterDto master){
-        masterService.deleteMaster(master.id());
+        masterService.deleteMaster(master.getId());
         return "redirect:/directories/masters";
     }
 }

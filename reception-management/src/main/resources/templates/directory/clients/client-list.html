@@ -11,8 +11,8 @@
   <h3>Клиенты</h3>
   <form method="get" data-th-action="@{/directories/clients}">
       <label>Фильтр:
-          <input type="text" name="clientName" data-th-value="${filterName}">
-          <input type="text" name="clientPhone" data-th-value="${filterPhone}">
+          <input type="text" name="clientName" data-th-value="${filterName}" placeholder="имя">
+          <input type="text" name="clientPhone" data-th-value="${filterPhone}" placeholder="телефон">
           <button type="submit">Поиск</button>
       </label>
   </form>

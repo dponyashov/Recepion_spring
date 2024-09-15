@@ -5,9 +5,11 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.dponyashov.dto.MasterDto;
 import ru.dponyashov.dto.filter.FilterMaster;
 import ru.dponyashov.entity.Master;
 import ru.dponyashov.exception.NotFoundEntityException;
+import ru.dponyashov.mappers.Mapper;
 import ru.dponyashov.repository.MasterRepository;
 import ru.dponyashov.safety.DataEncoder;
 import ru.dponyashov.service.MasterService;
@@ -23,16 +25,17 @@ public class MasterServiceImpl implements MasterService {
 
     private final DataEncoder dataEncoder;
     private final MasterRepository masterRepository;
+    private final Mapper<Master, MasterDto> masterMapper;
 
     @Override
-    public List<Master> findAll(){
+    public List<MasterDto> findAll(){
         return masterRepository.findAll().stream()
-                .peek(dataEncoder::decode)
-                .collect(Collectors.toList());
+                .map(master -> dataEncoder.decode(masterMapper.toDto(master)))
+                .toList();
     }
 
     @Override
-    public List<Master> findWithFilter(FilterMaster filterMaster) {
+    public List<MasterDto> findWithFilter(FilterMaster filterMaster) {
         var encodeFilter = dataEncoder.encode(filterMaster);
         return masterRepository.findWithFilter(
                         StringUtils.stringFilterPattern(encodeFilter.getMasterName()),
@@ -40,40 +43,37 @@ public class MasterServiceImpl implements MasterService {
                         Pageable.ofSize((encodeFilter.getPageSize() <= 0 ? 25 : encodeFilter.getPageSize()))
                                 .withPage(encodeFilter.getPageNumber())
                 ).stream()
-                .peek(dataEncoder::decode)
+                .map(master -> dataEncoder.decode(masterMapper.toDto(master)))
                 .toList();
     }
 
     @Override
-    public Master findById(Long id){
-        return dataEncoder.decode(masterRepository.findById(id)
-                .orElseThrow(() -> new NotFoundEntityException("Master", "id", String.valueOf(id)))
+    public MasterDto findById(Long id){
+        return dataEncoder.decode(masterMapper.toDto(
+                masterRepository.findById(id)
+                        .orElseThrow(() -> new NotFoundEntityException("Master", "id", String.valueOf(id)))
+                )
         );
     }
 
     @Override
-    public List<Master> findByName(String name){
+    public List<MasterDto> findByName(String name){
         return masterRepository.findByName(name).stream()
-                .peek(dataEncoder::decode)
+                .map(master -> dataEncoder.decode(masterMapper.toDto(master)))
                 .collect(Collectors.toList());
     }
 
     @Override
-    @Transactional
-    public Master save(Master master){
-        Master masterForSave = Master.builder().
-                id(master.getId()).
-                name(master.getName()).
-                phone(master.getPhone()).
-                build();
-        Master savedMaster = masterRepository.save(dataEncoder.encode(masterForSave));
-        log.info("Записаны данные мастера с id: {}", savedMaster.getId());
-        master.setId(savedMaster.getId());
-        return dataEncoder.decode(master);
+    public MasterDto save(MasterDto masterDto){
+        Master masterForSave = masterMapper.toEntity(dataEncoder.encode(masterDto));
+        Master savedMaster = masterRepository.save(masterForSave);
+        MasterDto savedMasterDto = masterMapper.toDto(dataEncoder.decode(savedMaster));
+
+        log.info("Записаны данные мастера с id: {}", savedMasterDto.getId());
+        return savedMasterDto;
     }
 
     @Override
-    @Transactional
     public void delete(Long id) {
         masterRepository.deleteById(id);
         log.info("Удален мастер с id: {}", id);

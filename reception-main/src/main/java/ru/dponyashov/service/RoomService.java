@@ -1,17 +1,17 @@
 package ru.dponyashov.service;
 
-import ru.dponyashov.entity.Room;
+import ru.dponyashov.dto.RoomDto;
 
 import java.util.List;
 
 public interface RoomService {
-    List<Room> findAll();
+    List<RoomDto> findAll();
 
-    Room findById(Long id);
+    RoomDto findById(Long id);
 
-    List<Room> findByNumber(String number);
+    List<RoomDto> findByNumber(String number);
 
     void delete(Long id);
 
-    Room save(Room room);
+    RoomDto save(RoomDto room);
 }

@@ -4,18 +4,19 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import ru.dponyashov.dto.ReceptionDto;
 import ru.dponyashov.dto.filter.FilterReception;
+import ru.dponyashov.entity.Reception;
 import ru.dponyashov.exception.MasterIsOccupiedException;
+import ru.dponyashov.exception.NotFoundEntityException;
 import ru.dponyashov.exception.RoomIsOccupiedException;
 import ru.dponyashov.exception.StartFinishTimeException;
-import ru.dponyashov.safety.DataEncoder;
-import ru.dponyashov.utils.NotifyCode;
-import ru.dponyashov.entity.*;
-import ru.dponyashov.exception.NotFoundEntityException;
 import ru.dponyashov.kafka.KafkaProducer;
+import ru.dponyashov.mappers.Mapper;
 import ru.dponyashov.repository.ReceptionRepository;
+import ru.dponyashov.safety.DataEncoder;
 import ru.dponyashov.service.ReceptionService;
+import ru.dponyashov.utils.NotifyCode;
 import ru.dponyashov.utils.StringUtils;
 
 import java.time.LocalTime;
@@ -31,26 +32,27 @@ public class ReceptionServiceImpl implements ReceptionService {
     private final KafkaProducer kafkaProducer;
     private final DataEncoder dataEncoder;
 
+    private final Mapper<Reception, ReceptionDto> receptionMapper;
+
     @Override
-    public List<Reception> findAll(){
+    public List<ReceptionDto> findAll(){
         return receptionRepository.findAll().stream()
-                .peek(dataEncoder::decode)
+                .map(reception->dataEncoder.decode(receptionMapper.toDto(reception)))
                 .toList();
     }
 
     @Override
-    public Reception findById(Long id){
+    public ReceptionDto findById(Long id){
         Reception receptionFromDB = receptionRepository.findById(id)
                 .orElseThrow(() -> new NotFoundEntityException("Reception", "id", String.valueOf(id)));
 
-        dataEncoder.decode(receptionFromDB);
-
-        return receptionFromDB;
+        return dataEncoder.decode(receptionMapper.toDto(receptionFromDB));
     }
 
     @Override
-    @Transactional
-    public Reception save(Reception reception){
+    public ReceptionDto save(ReceptionDto receptionDto){
+        Reception reception = dataEncoder.encode(receptionMapper.toEntity(receptionDto));
+
         if(reception.getFinishTime() == null){
             reception.setFinishTime(reception.getStartTime());
         }
@@ -67,23 +69,24 @@ public class ReceptionServiceImpl implements ReceptionService {
             throw new MasterIsOccupiedException(reception);
         }
 
-        Reception savedReception = receptionRepository.save(dataEncoder.encode(reception));
+        Reception savedReception = receptionRepository.save(reception);
+        ReceptionDto savedReceptionDto = dataEncoder.decode(receptionMapper.toDto(savedReception));
+
         if(savedReception.getClient().getNotifications() != null){
-            sendNotifications(savedReception);
+            sendNotifications(savedReceptionDto);
         }
-        log.info("Записаны данные записи с id: {}", savedReception.getId());
-        return dataEncoder.decode(reception);
+        log.info("Записаны данные записи с id: {}", savedReceptionDto.id());
+        return savedReceptionDto;
     }
 
     @Override
-    @Transactional
     public void delete(Long id){
         receptionRepository.deleteById(id);
         log.info("Удалена запись с id: {}", id);
     }
 
     @Override
-    public List<Reception> findWithFilter(FilterReception filterReception) {
+    public List<ReceptionDto> findWithFilter(FilterReception filterReception) {
         var encodeFilter = dataEncoder.encode(filterReception);
         return receptionRepository.findWithFilter(
                         StringUtils.stringFilterPattern(encodeFilter.getClientName()),
@@ -95,24 +98,24 @@ public class ReceptionServiceImpl implements ReceptionService {
                         encodeFilter.getIdRoom(),
                         pageableOrDefault(encodeFilter.getPageSize(), encodeFilter.getPageNumber())
                 ).stream()
-                .peek(dataEncoder::decode)
+                .map(entity->dataEncoder.decode(receptionMapper.toDto(entity)))
                 .toList();
     }
 
     @Override
     public void sendNotifications(Long id) {
-        Reception reception = findById(id);
-        sendNotifications(dataEncoder.decode(reception));
+        ReceptionDto reception = findById(id);
+        sendNotifications(reception);
         log.info("Отправлены оповещения по записи id: {}", id);
     }
 
-    private void sendNotifications(Reception reception) {
-        reception.getClient().getNotifications().stream()
-                .map(notification -> NotifyCode.valueOf(notification.getCode()))
+    private void sendNotifications(ReceptionDto reception) {
+        reception.client().getNotifications().stream()
+                .map(notification -> NotifyCode.valueOf(notification.code()))
                 .forEach((code) -> sendNotify(code, reception));
     }
 
-    private void sendNotify(NotifyCode code, Reception reception) {
+    private void sendNotify(NotifyCode code, ReceptionDto reception) {
         switch(code) {
             case PHONE -> kafkaProducer.sendPhone(reception);
             case MAIL -> kafkaProducer.sendMail(reception);

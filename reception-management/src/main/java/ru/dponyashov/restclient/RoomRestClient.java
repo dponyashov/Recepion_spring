@@ -89,4 +89,13 @@ public class RoomRestClient implements RoomService {
             return Optional.empty();
         }
     }
+
+    @Override
+    public List<RoomDto> findAll() {
+        return roomRestClient
+                .get()
+                .uri("/api/room")
+                .retrieve()
+                .body(ROOM_TYPE_REFERENCE);
+    }
 }

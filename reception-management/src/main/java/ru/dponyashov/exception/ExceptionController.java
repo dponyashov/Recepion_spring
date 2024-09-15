@@ -7,17 +7,25 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.Locale;
-import java.util.NoSuchElementException;
 
 @ControllerAdvice
 public class ExceptionController {
 
-    @ExceptionHandler(NoFoundDirectoryElementException.class)
-    public String handlerNoFoundDirectoryElementException(NoFoundDirectoryElementException exception, Model model,
-                                                HttpServletResponse response, Locale locale){
+    @ExceptionHandler({NotFoundDirectoryElementException.class, NotFoundReception.class})
+    public String handlerNoFoundException(RuntimeException exception, Model model,
+                                                          HttpServletResponse response, Locale locale){
         response.setStatus(HttpStatus.NOT_FOUND.value());
         model.addAttribute("error",
                 exception.getMessage());
+        return "errors/404";
+    }
+
+    @ExceptionHandler(Exception.class)
+    public String handlerOtherException(Exception exception, Model model,
+                                                          HttpServletResponse response, Locale locale){
+        response.setStatus(HttpStatus.NOT_FOUND.value());
+        model.addAttribute("error",
+                "Неизвестная ошибка: " + exception.getMessage());
         return "errors/404";
     }
 }

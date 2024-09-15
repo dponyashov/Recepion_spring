@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.dponyashov.dto.ClientDto;
 import ru.dponyashov.dto.NotificationDto;
 import ru.dponyashov.exception.BadRequestException;
-import ru.dponyashov.exception.NoFoundDirectoryElementException;
+import ru.dponyashov.exception.NotFoundDirectoryElementException;
 import ru.dponyashov.service.ClientService;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class ClientController {
     @ModelAttribute("client")
     public ClientDto client(@PathVariable("clientId") Long clientId){
         return clientService.findClientById(clientId)
-                .orElseThrow(() -> new NoFoundDirectoryElementException("Клиент не найден"));
+                .orElseThrow(() -> new NotFoundDirectoryElementException("Клиент не найден"));
     }
 
     @ModelAttribute("notificationList")
@@ -54,9 +54,9 @@ public class ClientController {
                     .toList();
         }
         try {
-            clientService.updateClient(client.id(), newClient.name(), newClient.phone(), newClient.mail(),
+            clientService.updateClient(client.getId(), newClient.getName(), newClient.getPhone(), newClient.getMail(),
                     selectedNotify);
-            return "redirect:/directories/clients/%d".formatted(client.id());
+            return "redirect:/directories/clients/%d".formatted(client.getId());
         } catch(BadRequestException exception){
             model.addAttribute("new_client", newClient);
             model.addAttribute("errors", exception.getErrors());
@@ -66,7 +66,7 @@ public class ClientController {
 
     @PostMapping("delete")
     public String deleteClient(@ModelAttribute("client") ClientDto client){
-        clientService.deleteClient(client.id());
+        clientService.deleteClient(client.getId());
         return "redirect:/directories/clients";
     }
 }

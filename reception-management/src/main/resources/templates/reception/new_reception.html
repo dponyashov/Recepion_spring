@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ресепшен. Новая запись</title>
+</head>
+<body>
+<a data-th-href="@{/receptions}">&larr; к списку записей</a>
+    <h1>Новая запись</h1>
+    <div data-th-if="${onlineRecord}">
+        <form method="post"
+              data-th-action="@{/online-records/{recordId}/cancel(recordId=${onlineRecord.id})}">
+            <fieldset>
+                <legend>Данные онлайн-записи</legend>
+                <table>
+                    <tbody>
+                    <tr>
+                        <td>Имя</td>
+                        <td data-th-text="${onlineRecord.name}"></td>
+                    </tr>
+                    <tr>
+                        <td>Телефон</td>
+                        <td data-th-text="${onlineRecord.phone}"></td>
+                    </tr>
+                    <tr>
+                        <td>Статус</td>
+                        <td data-th-text="${onlineRecord.status}"></td>
+                    </tr>
+                    <tr>
+                        <td>Описание</td>
+                        <td data-th-text="${onlineRecord.note}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+                <button type="submit">Отменить онлайн запись</button>
+            </fieldset>
+        </form>
+    </div>
+    <form method="post"
+          data-th-action="@{/receptions/create}">
+        <div data-th-if="${onlineRecord}">
+            <input type="hidden" id="online_record" name="online_record"
+                    data-th-value="${onlineRecord?.id}"/>
+        </div>
+        <label>Клиент:
+            <select id="client" name="client"
+                    data-th-value="${reception?.client?.id}">
+                <option data-th-each="client: ${clientList}"
+                        data-th-value="${client.id}"
+                        data-th-text="${client.name}"></option>
+
+            </select>
+        </label>
+        <br>
+        <label>Мастер:
+            <select id="master" name="master"
+                    data-th-value="${reception?.master?.id}">
+                <option data-th-each="master: ${masterList}"
+                        data-th-value="${master.id}"
+                        data-th-text="${master.name}"></option>
+            </select>
+        </label>
+        <br>
+        <label>Помещение:
+            <select id="room" name="room"
+                data-th-value="${reception?.room?.id}">
+                <option data-th-each="room: ${roomList}"
+                        data-th-value="${room.id}"
+                        data-th-text="${room.number}"></option>
+            </select>
+        </label>
+        <br>
+        <label>Дата записи:
+            <input type="date" id="dateOfVisit" name="dateOfVisit"
+                   data-th-value="${reception?.dateOfVisit}">
+        </label>
+        <br>
+        <label>Время начала
+        <input type="time" id="startTime" name="startTime"
+               data-th-value="${reception?.startTime}">
+        </label>
+        </br>
+        <label>Время окончания
+        <input type="time" id="finishTime" name="finishTime"
+               data-th-value="${reception?.finishTime}">
+        </label>
+        </br>
+        <label>Описание
+            <br>
+            <textarea name="details" id="details"
+                      data-th-text="${reception?.details}">
+            </textarea>
+        </label>
+        <br>
+        <button type="submit">Сохранить</button>
+    </form>
+</body>
+</html>

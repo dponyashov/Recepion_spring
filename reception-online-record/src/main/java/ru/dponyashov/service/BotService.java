@@ -47,7 +47,15 @@ public class BotService {
     private SendMessage saveProcess(Update update) {
         if (commandStatus == CommandStatus.SAVE) {
 
-            recordService.save(recordDto);
+            try {
+                recordService.save(recordDto);
+            } catch(RuntimeException exception){
+                commandStatus = CommandStatus.NONE;
+                recordDto.clear();
+                String text = String.format("Сохранить данные не удалось из-за ошибки:\n%s\n/record - чтобы начать ввод",
+                        exception.getMessage());
+                return generateSendMessageWithText(update, text);
+            }
 
             commandStatus = CommandStatus.NONE;
             String text = "Данные сохранены, спасибо за обращение.\n" +

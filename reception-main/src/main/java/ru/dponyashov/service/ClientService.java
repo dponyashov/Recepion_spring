@@ -1,25 +1,25 @@
 package ru.dponyashov.service;
 
+import ru.dponyashov.dto.ClientDto;
+import ru.dponyashov.dto.NotificationDto;
 import ru.dponyashov.dto.filter.FilterClient;
-import ru.dponyashov.entity.Client;
-import ru.dponyashov.entity.Notification;
 
 import java.util.List;
 
 public interface ClientService {
-    List<Client> findAll();
+    List<ClientDto> findAll();
 
-    Client findById(Long id);
+    ClientDto findById(Long id);
 
-    List<Client> findByName(String name);
+    List<ClientDto> findByName(String name);
 
     void delete(Long id);
 
-    Client save(Client client);
+    ClientDto save(ClientDto clientDto);
 
-    List<Client> findWithFilter(FilterClient filterClient);
+    List<ClientDto> findWithFilter(FilterClient filterClient);
 
-    Notification findNotifyById(Long notifyId);
+    NotificationDto findNotifyById(Long notifyId);
 
-    List<Notification> findAllNotification();
+    List<NotificationDto> findAllNotification();
 }

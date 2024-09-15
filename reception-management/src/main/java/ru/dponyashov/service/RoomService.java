@@ -15,4 +15,6 @@ public interface RoomService {
     void deleteMaster(Long id);
 
     Optional<RoomDto> findRoomById(Long roomId);
+
+    List<RoomDto> findAll();
 }

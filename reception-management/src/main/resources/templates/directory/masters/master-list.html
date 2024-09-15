@@ -11,8 +11,8 @@
   <h3>Мастера</h3>
   <form method="get" data-th-action="@{/directories/masters}">
       <label>Фильтр:
-          <input type="text" name="masterName" data-th-value="${filterName}">
-          <input type="text" name="masterPhone" data-th-value="${filterPhone}">
+          <input type="text" name="masterName" data-th-value="${filterName}" placeholder="имя">
+          <input type="text" name="masterPhone" data-th-value="${filterPhone}" placeholder="телефон">
           <button type="submit">Поиск</button>
       </label>
   </form>

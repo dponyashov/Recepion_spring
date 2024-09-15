@@ -8,6 +8,7 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+import ru.dponyashov.dto.ClientDto;
 import ru.dponyashov.dto.filter.FilterClient;
 import ru.dponyashov.entity.Client;
 import ru.dponyashov.service.ClientService;
@@ -23,7 +24,7 @@ public class ClientController {
     private final ClientService clientService;
 
     @GetMapping
-    public ResponseEntity<List<Client>> findClient(FilterClient filterClient){
+    public ResponseEntity<List<ClientDto>> findClient(FilterClient filterClient){
         if(filterClient != null){
             return new ResponseEntity<>(clientService.findWithFilter(filterClient), HttpStatus.OK);
         } else {
@@ -32,13 +33,13 @@ public class ClientController {
     }
 
     @GetMapping("/{idClient:\\d+}")
-    public ResponseEntity<Client> findById(@PathVariable("idClient") Long id){
-        Client clientFromDB =  clientService.findById(id);
+    public ResponseEntity<ClientDto> findById(@PathVariable("idClient") Long id){
+        ClientDto clientFromDB =  clientService.findById(id);
         return new ResponseEntity<>(clientFromDB, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Client> saveClient(@Valid @RequestBody Client newClient,
+    public ResponseEntity<ClientDto> saveClient(@Valid @RequestBody ClientDto newClient,
                                              BindingResult bindingResult,
                                              UriComponentsBuilder uriComponentsBuilder) throws BindException {
         if(bindingResult.hasErrors()){
@@ -48,7 +49,7 @@ public class ClientController {
                 throw new BindException(bindingResult);
             }
         } else {
-            Client clientFromDB = clientService.save(newClient);
+            ClientDto clientFromDB = clientService.save(newClient);
             return ResponseEntity
                     .created(uriComponentsBuilder
                             .path("/api/client/{clientId}")
@@ -58,8 +59,8 @@ public class ClientController {
     }
 
     @PutMapping("/{idClient:\\d+}")
-    public ResponseEntity<Client> saveClient(@PathVariable("idClient") Long id,
-                                             @Valid @RequestBody Client client,
+    public ResponseEntity<ClientDto> saveClient(@PathVariable("idClient") Long id,
+                                             @Valid @RequestBody ClientDto client,
                                              BindingResult bindingResult) throws BindException {
         if(bindingResult.hasErrors()){
             if(bindingResult instanceof BindException exception){
@@ -68,8 +69,14 @@ public class ClientController {
                 throw new BindException(bindingResult);
             }
         } else {
-            client.setId(id);
-            Client clientFromDB = clientService.save(client);
+            ClientDto clientForSave = ClientDto.builder()
+                    .id(id)
+                    .name(client.getName())
+                    .phone(client.getPhone())
+                    .mail(client.getMail())
+                    .notifications(client.getNotifications())
+                    .build();
+            ClientDto clientFromDB = clientService.save(clientForSave);
             return new ResponseEntity<>(clientFromDB, HttpStatus.OK);
         }
     }

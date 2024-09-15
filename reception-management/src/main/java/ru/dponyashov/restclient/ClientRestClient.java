@@ -17,6 +17,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 public class ClientRestClient implements ClientService {
+
     private static final ParameterizedTypeReference<List<ClientDto>> CLIENT_TYPE_REFERENCE =
             new ParameterizedTypeReference<>(){};
     private static final ParameterizedTypeReference<List<NotificationDto>> NOTIFY_TYPE_REFERENCE =
@@ -115,5 +116,14 @@ public class ClientRestClient implements ClientService {
         } catch(HttpClientErrorException.NotFound exception){
             return Optional.empty();
         }
+    }
+
+    @Override
+    public List<ClientDto> findAll() {
+        return clientRestClient
+                .get()
+                .uri("/api/client")
+                .retrieve()
+                .body(CLIENT_TYPE_REFERENCE);
     }
 }

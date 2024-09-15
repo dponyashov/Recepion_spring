@@ -37,8 +37,8 @@ public class MasterListController {
     @PostMapping("create")
     public String createMaster(MasterDto newMaster, Model model){
         try {
-            MasterDto master = masterService.createMaster(newMaster.name(), newMaster.phone());
-            return "redirect:/directories/masters/%d".formatted(master.id());
+            MasterDto master = masterService.createMaster(newMaster.getName(), newMaster.getPhone());
+            return "redirect:/directories/masters/%d".formatted(master.getId());
         }  catch(BadRequestException exception){
             model.addAttribute("master", newMaster);
             model.addAttribute("errors", exception.getErrors());

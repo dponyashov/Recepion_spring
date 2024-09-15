@@ -27,12 +27,10 @@ public class Master {
     private Long id;
 
     @Column(name = "name_master")
-    @StringToEncode
     @NotNull(message = "{reception.errors.master.name.is_null}")
     @Size(min=5, max=50, message = "{reception.errors.master.name.invalid_size}")
     private String name;
 
     @Column(name = "phone_master")
-    @StringToEncode
     private String phone;
 }

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import ru.dponyashov.dto.ReceptionDto;
 import ru.dponyashov.entity.Reception;
 import ru.dponyashov.kafkadto.ClientNotify;
 
@@ -22,25 +23,25 @@ public class SimpleKafkaProducer implements KafkaProducer {
     private final KafkaTemplate<Long, ClientNotify> kafkaTemplate;
 
     @Override
-    public void sendMail(Reception reception){
-        kafkaTemplate.send(mailTopicName, reception.getId(),
+    public void sendMail(ReceptionDto reception){
+        kafkaTemplate.send(mailTopicName, reception.id(),
                 ClientNotify.builder()
-                        .idReception(reception.getId())
-                        .dateOfVisit(reception.getDateOfVisit().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
-                        .startTime(reception.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm")))
-                        .nameClient(reception.getClient().getName())
-                        .mailClient(reception.getClient().getMail())
+                        .idReception(reception.id())
+                        .dateOfVisit(reception.dateOfVisit().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
+                        .startTime(reception.startTime().format(DateTimeFormatter.ofPattern("HH:mm")))
+                        .nameClient(reception.client().getName())
+                        .mailClient(reception.client().getMail())
                         .build());
     }
     @Override
-    public void sendPhone(Reception reception){
-        kafkaTemplate.send(phoneTopicName, reception.getId(),
+    public void sendPhone(ReceptionDto reception){
+        kafkaTemplate.send(phoneTopicName, reception.id(),
                 ClientNotify.builder()
-                    .idReception(reception.getId())
-                    .dateOfVisit(reception.getDateOfVisit().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
-                    .startTime(reception.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm")))
-                    .nameClient(reception.getClient().getName())
-                    .phoneClient(reception.getClient().getPhone())
+                    .idReception(reception.id())
+                    .dateOfVisit(reception.dateOfVisit().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
+                    .startTime(reception.startTime().format(DateTimeFormatter.ofPattern("HH:mm")))
+                    .nameClient(reception.client().getName())
+                    .phoneClient(reception.client().getPhone())
                 .build());
     }
 }
