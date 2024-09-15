@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.dponyashov.dto.ReceptionDto;
 import ru.dponyashov.dto.filter.FilterReception;
-import ru.dponyashov.entity.Reception;
 import ru.dponyashov.service.ReceptionService;
 
 import java.util.List;

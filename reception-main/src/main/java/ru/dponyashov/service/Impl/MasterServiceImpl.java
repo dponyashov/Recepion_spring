@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.dponyashov.dto.MasterDto;
 import ru.dponyashov.dto.filter.FilterMaster;
 import ru.dponyashov.entity.Master;

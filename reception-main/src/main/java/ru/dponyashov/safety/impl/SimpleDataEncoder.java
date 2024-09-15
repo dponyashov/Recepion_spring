@@ -1,6 +1,5 @@
 package ru.dponyashov.safety.impl;
 
-import jakarta.persistence.Entity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.dponyashov.safety.DataEncoder;

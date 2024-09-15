@@ -9,7 +9,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.dponyashov.dto.RoomDto;
-import ru.dponyashov.entity.Room;
 import ru.dponyashov.service.RoomService;
 
 import java.util.List;

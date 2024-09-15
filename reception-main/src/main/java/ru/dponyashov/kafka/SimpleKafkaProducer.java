@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import ru.dponyashov.dto.ReceptionDto;
-import ru.dponyashov.entity.Reception;
 import ru.dponyashov.kafkadto.ClientNotify;
 
 import java.time.format.DateTimeFormatter;

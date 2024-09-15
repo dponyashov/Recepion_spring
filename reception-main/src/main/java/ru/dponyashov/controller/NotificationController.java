@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.dponyashov.dto.NotificationDto;
-import ru.dponyashov.entity.Notification;
-import ru.dponyashov.mappers.Mapper;
 import ru.dponyashov.service.ClientService;
 
 import java.util.List;
