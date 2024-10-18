@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>[[${client.name}]] &ndash; Ресепшен</title>
+</head>
+<body>
+<h1 data-th-text="${client.name}"></h1>
+<a data-th-href="@{/directories/clients/{clientId}(clientId=${client.id})}">&larr; к клиенту</a>
+
+<h2>Удалить клиента:<span data-th-text="${client.name}"></span>?</h2>
+<form method="post" data-th-action="@{/directories/clients/{clientId}/delete(clientId=${client.id})}">
+  <button type="submit">Удалить</button>
+</form>
+</body>
+</html>

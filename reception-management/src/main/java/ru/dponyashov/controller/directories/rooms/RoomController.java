@@ -45,6 +45,11 @@ public class RoomController {
         }
     }
 
+    @GetMapping("delete")
+    public String deleteRoomPage(@ModelAttribute("room") RoomDto room){
+        return "directory/rooms/delete_room";
+    }
+
     @PostMapping("delete")
     public String deleteRoom(@ModelAttribute("room") RoomDto room){
         roomService.deleteMaster(room.id());

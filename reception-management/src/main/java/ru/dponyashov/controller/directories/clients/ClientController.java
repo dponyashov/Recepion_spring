@@ -64,6 +64,11 @@ public class ClientController {
         }
     }
 
+    @GetMapping("delete")
+    public String deleteClientPage(@ModelAttribute("client") ClientDto client){
+        return "directory/clients/delete_client";
+    }
+
     @PostMapping("delete")
     public String deleteClient(@ModelAttribute("client") ClientDto client){
         clientService.deleteClient(client.getId());

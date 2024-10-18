@@ -45,6 +45,11 @@ public class MasterController {
         }
     }
 
+    @GetMapping("delete")
+    public String deleteMasterPage(@ModelAttribute("master") MasterDto master){
+        return "directory/masters/delete_master";
+    }
+
     @PostMapping("delete")
     public String deleteMaster(@ModelAttribute("master") MasterDto master){
         masterService.deleteMaster(master.getId());

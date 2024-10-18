@@ -54,7 +54,7 @@ public class MasterController {
             MasterDto masterFromDB = masterService.save(newMaster);
             return ResponseEntity
                     .created(uriComponentsBuilder
-                            .path("/api/room/{masterId}")
+                            .path("/api/master/{masterId}")
                             .build(Map.of("masterId", masterFromDB.getId())))
                     .body(masterFromDB);
         }

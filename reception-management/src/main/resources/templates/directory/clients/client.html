@@ -22,8 +22,6 @@
   </li>
 <br>
 <a data-th-href="@{/directories/clients/{clientId}/edit(clientId=${client.id})}">Изменить</a>
-<form method="post" data-th-action="@{/directories/clients/{clientId}/delete(clientId=${client.id})}">
-  <button type="submit">Удалить</button>
-</form>
+<a data-th-href="@{/directories/clients/{clientId}/delete(clientId=${client.id})}">Удалить</a>
 </body>
 </html>

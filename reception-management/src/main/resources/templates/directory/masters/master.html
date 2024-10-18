@@ -14,8 +14,6 @@
   <li> <strong>Телефон</strong>:<span data-th-text="${master.phone}"></span></li>
 </ul>
 <a data-th-href="@{/directories/masters/{masterId}/edit(masterId=${master.id})}">Изменить</a>
-<form method="post" data-th-action="@{/directories/masters/{masterId}/delete(masterId=${master.id})}">
-  <button type="submit">Удалить</button>
-</form>
+<a data-th-href="@{/directories/masters/{masterId}/delete(masterId=${master.id})}">Удалить</a>
 </body>
 </html>
