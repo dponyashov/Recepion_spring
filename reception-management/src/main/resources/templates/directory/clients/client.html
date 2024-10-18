@@ -17,9 +17,9 @@
 <br>
 Оповещения:
 <br>
-  <li data-th-each="notification: ${client.notifications}">
+  <p data-th-each="notification: ${client.notifications}">
     <span data-th-text="${notification.name}"></span>
-  </li>
+  </p>
 <br>
 <a data-th-href="@{/directories/clients/{clientId}/edit(clientId=${client.id})}">Изменить</a>
 <a data-th-href="@{/directories/clients/{clientId}/delete(clientId=${client.id})}">Удалить</a>
